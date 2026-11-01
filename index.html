@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Days Better</title>
+    <style>
+        :root {
+            --bg-deep: #1E002C;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.15);
+            --accent-pink: #FF99DD;
+            --accent-cyan: #B4E7FF;
+            --accent-lavender: #DCC8FF;
+            --text-main: #F2F0FF;
+            --text-muted: #B3A5C9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1E002C 0%, #2A0845 50%, #12001C 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-lavender);
+            margin-bottom: 12px;
+        }
+
+        /* Mood Selector Grid */
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .mood-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 12px 6px;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mood-btn span.emoji { font-size: 1.5rem; }
+        .mood-btn span.label { font-size: 0.75rem; }
+
+        .mood-btn.selected {
+            background: linear-gradient(135deg, rgba(255, 153, 221, 0.3), rgba(180, 231, 255, 0.3));
+            border-color: var(--accent-pink);
+            transform: scale(1.03);
+        }
+
+        /* Tags Input */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tag-btn.selected {
+            background: var(--accent-cyan);
+            color: #12001C;
+            border-color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        /* Journal Text Area */
+        textarea {
+            width: 100%;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            resize: none;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: var(--accent-lavender);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(90deg, var(--accent-pink), var(--accent-lavender));
+            color: #12001C;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 153, 221, 0.4);
+            transition: opacity 0.2s ease;
+        }
+
+        .submit-btn:hover { opacity: 0.9; }
+
+        /* Insight Box */
+        .insight-box {
+            background: linear-gradient(135deg, rgba(220, 200, 255, 0.15), rgba(180, 231, 255, 0.1));
+            border-left: 3px solid var(--accent-pink);
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            line-height: 1.4;
+            color: var(--text-main);
+        }
+
+        /* History Items */
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .history-item {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .history-body {
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Your Days Better</h1>
+        <p>A peaceful space to align your mind & thoughts.</p>
+    </header>
+
+    <!-- Log Input Card -->
+    <div class="card">
+        <div class="section-title">1. How are you feeling?</div>
+        <div class="mood-grid" id="moodGrid">
+            <div class="mood-btn" onclick="selectMood(this, 'Happy')">
+                <span class="emoji">✨</span><span class="label">Happy</span>
+            </div>
+            <div class="mood-btn" onclick="selectMood(this, 'Calm')">
+                <span class="emoji">🌿</span><span class="label">Calm</span>
+            </div>
+            <div class="mood-btn" onclick="selectMood(this, 'Tired')">
+                <span class="emoji">🌙</span><span class="label">Tired</span>
+            </div>
+            <div class="mood-btn" onclick="selectMood(this, 'Anxious')">
+                <span class="emoji">🌧️</span><span class="label">Anxious</span>
+            </div>
+        </div>
+
+        <div class="section-title" style="margin-top: 18px;">2. Feelings Tags</div>
+        <div class="tags-container" id="tagsContainer">
+            <div class="tag-btn" onclick="toggleTag(this)">Peaceful</div>
+            <div class="tag-btn" onclick="toggleTag(this)">Productive</div>
+            <div class="tag-btn" onclick="toggleTag(this)">Overwhelmed</div>
+            <div class="tag-btn" onclick="toggleTag(this)">Grateful</div>
+            <div class="tag-btn" onclick="toggleTag(this)">Restless</div>
+        </div>
+
+        <div class="section-title" style="margin-top: 18px;">3. Write your thoughts</div>
+        <textarea id="journalText" placeholder="What was on your mind today?..."></textarea>
+
+        <button class="submit-btn" style="margin-top: 16px;" onclick="saveEntry()">Log Entry & Calculate Insights</button>
+    </div>
+
+    <!-- Insight Result Card -->
+    <div class="card" id="insightCard" style="display: none;">
+        <div class="section-title">Calculated Reflection</div>
+        <div class="insight-box" id="insightOutput"></div>
+    </div>
+
+    <!-- Past Logs -->
+    <div class="card">
+        <div class="section-title">Recent Entries</div>
+        <div class="history-list" id="historyList">
+            <p style="font-size: 0.85rem; color: var(--text-muted);">No entries yet today.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    let selectedMood = '';
+    let selectedTags = [];
+
+    function selectMood(el, mood) {
+        document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedMood = mood;
+    }
+
+    function toggleTag(el) {
+        el.classList.toggle('selected');
+        const tag = el.innerText;
+        if (selectedTags.includes(tag)) {
+            selectedTags = selectedTags.filter(t => t !== tag);
+        } else {
+            selectedTags.push(tag);
+        }
+    }
+
+    function calculateKeywordInsight(text, mood) {
+        const lower = text.toLowerCase();
+        let scoreNature = 0;
+        let scoreRest = 0;
+        let scoreWork = 0;
+
+        // Rule-based keyword matching math
+        if (lower.includes('walk') || lower.includes('outside') || lower.includes('sun') || lower.includes('nature')) scoreNature++;
+        if (lower.includes('sleep') || lower.includes('tired') || lower.includes('rest') || lower.includes('bed')) scoreRest++;
+        if (lower.includes('work') || lower.includes('study') || lower.includes('busy') || lower.includes('project')) scoreWork++;
+
+        if (scoreNature > 0) {
+            return "Notice how movement or outdoor time connects to your reflections today. Keeping outdoor light in your routine works well for your mindset.";
+        } else if (scoreRest > 0) {
+            return "Your entry centers on energy and rest levels. Listen to your physical cues and prioritize low-demand recovery time.";
+        } else if (scoreWork > 0) {
+            return "Today carried focus on tasks and output. Balance active efforts with intentional wrap-up rituals tonight.";
+        } else if (mood === 'Happy' || mood === 'Calm') {
+            return "Your selected mood reflects a grounded baseline today. Tagging key moments helps maintain continuity over time.";
+        } else {
+            return "Thank you for taking time to log your thoughts. Expressing reflections consistently builds strong self-awareness patterns.";
+        }
+    }
+
+    function saveEntry() {
+        const text = document.getElementById('journalText').value;
+        if (!selectedMood) {
+            alert('Please select a mood icon first!');
+            return;
+        }
+
+        const insight = calculateKeywordInsight(text, selectedMood);
+        
+        // Show output
+        document.getElementById('insightOutput').innerText = insight;
+        document.getElementById('insightCard').style.display = 'block';
+
+        // Store locally
+        const entry = {
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+            mood: selectedMood,
+            tags: selectedTags,
+            text: text,
+            insight: insight
+        };
+
+        let history = JSON.parse(localStorage.getItem('ydb_logs') || '[]');
+        history.unshift(entry);
+        localStorage.setItem('ydb_logs', JSON.stringify(history));
+
+        renderHistory();
+        resetForm();
+    }
+
+    function renderHistory() {
+        let history = JSON.parse(localStorage.getItem('ydb_logs') || '[]');
+        const listEl = document.getElementById('historyList');
+
+        if (history.length === 0) {
+            listEl.innerHTML = '<p style="font-size: 0.85rem; color: var(--text-muted);">No entries yet today.</p>';
+            return;
+        }
+
+        listEl.innerHTML = history.map(item => `
+            <div class="history-item">
+                <div class="history-header">
+                    <span>${item.date} — <strong>${item.mood}</strong></span>
+                    <span>${item.tags.join(', ')}</span>
+                </div>
+                <div class="history-body">${item.text ? `"${item.text}"` : 'No written notes.'}</div>
+            </div>
+        `).join('');
+    }
+
+    function resetForm() {
+        document.getElementById('journalText').value = '';
+        document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('selected'));
+        document.querySelectorAll('.tag-btn').forEach(btn => btn.classList.remove('selected'));
+        selectedMood = '';
+        selectedTags = [];
+    }
+
+    // Load saved history on launch
+    renderHistory();
+</script>
+</body>
+</html>
