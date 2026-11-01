@@ -1,0 +1,15 @@
+{
+  "name": "Your Days Better",
+  "short_name": "Days Better",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8f4ff",
+  "theme_color": "#f8f4ff",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iI2U2ZTZmYSIvPjxjaXJjbGUgY3g9IjcwIiBjeT0iMzAiIHI9IjMwIiBmaWxsPSIjZmZkMWRjIiBvcGFjaXR5PSIwLjgiLz48Y2lyY2xlIGN4PSIzMCIgY3k9IjcwIiByPSI0MCIgZmlsbD0iI2IwZTBlNiIgb3BhY2l0eT0iMC44Ii8+PC9zdmc+",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}
