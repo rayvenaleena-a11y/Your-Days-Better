@@ -2,719 +2,794 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Your Days Better</title>
-    <!-- Expanded Font Library -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Great+Vibes&family=Dancing+Script:wght@600&family=Pacifico&family=Sacramento&family=Parisienne&family=Playfair+Display:ital,wght@0,500;1,400&family=Comfortaa:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Comfortaa:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            /* Default Dreamy Light Palette */
-            --bg-base: #F8F4FF;
-            --bg-gradient: radial-gradient(circle at 10% 10%, #FEE5F1 0%, #EAE0F9 45%, #E3F2FD 85%);
-            --card-bg: rgba(255, 255, 255, 0.75);
-            --card-border: rgba(255, 255, 255, 0.9);
-            --text-main: #331B45;
-            --text-muted: #7E6B90;
-            --accent-primary: #C972DB;
-            --accent-pill: #F2D5F8;
-            --accent-pleasant: #D2F7E1;
-            --accent-difficult: #E2D5FC;
-            --current-font: 'Quicksand', sans-serif;
-            --shadow-soft: 0 10px 30px rgba(162, 131, 189, 0.12);
+            --c1: #e0c3fc;
+            --c2: #8ec5fc;
+            --c3: #fbc2eb;
+            --text: #333;
+            --card-bg: rgba(255, 255, 255, 0.6);
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --border: rgba(255,255,255, 0.4);
+            --font: 'Quicksand', sans-serif;
         }
 
-        /* Dark Theme Class Option */
-        body.theme-dark {
-            --bg-base: #140521;
-            --bg-gradient: radial-gradient(circle at 10% 10%, #2D0B3F 0%, #17072B 50%, #090214 100%);
-            --card-bg: rgba(255, 255, 255, 0.06);
-            --card-border: rgba(255, 255, 255, 0.12);
-            --text-main: #F4ECFD;
-            --text-muted: #A895BD;
-            --accent-primary: #E58CFC;
-            --accent-pill: rgba(229, 140, 252, 0.2);
-            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.4);
+        [data-theme="dark"] {
+            --text: #f0f0f0;
+            --card-bg: rgba(30, 30, 30, 0.6);
+            --nav-bg: rgba(20, 20, 20, 0.9);
+            --border: rgba(255,255,255, 0.1);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: var(--current-font);
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-main);
-            min-height: 100vh;
+            font-family: var(--font);
+            color: var(--text);
+            background: linear-gradient(135deg, var(--c1), var(--c2), var(--c3));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh;
+            overflow: hidden;
+            transition: color 0.3s ease;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Layout */
+        .app-container {
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 16px 16px 100px 16px;
+            padding-bottom: 70px;
         }
 
-        .container {
-            width: 100%;
-            max-width: 420px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        /* Top Header Area */
-        .app-top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 4px 10px 4px;
-        }
-
-        .app-title {
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: var(--text-main);
-            letter-spacing: -0.3px;
-        }
-
-        .app-title span { color: var(--accent-primary); }
-
-        .saved-status {
-            font-size: 0.75rem;
-            color: #55B978;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-weight: 500;
-        }
-
-        /* Sub Navigation Tabs (Log / Stats) inside feature pages */
-        .sub-tab-nav {
-            display: flex;
-            gap: 16px;
-            border-bottom: 1px solid rgba(126, 107, 144, 0.15);
-            padding-bottom: 8px;
-            margin-bottom: 8px;
-        }
-
-        .sub-tab-btn {
-            background: none;
-            border: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            padding-bottom: 4px;
-            position: relative;
-        }
-
-        .sub-tab-btn.active {
-            color: var(--text-main);
-        }
-
-        .sub-tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -9px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--accent-primary);
-            border-radius: 3px;
-        }
-
-        /* Clean Isolated Main Tabs */
-        .tab-section {
+        .page {
             display: none;
             flex-direction: column;
-            gap: 14px;
-            animation: fadeIn 0.2s ease-out;
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
         }
 
-        .tab-section.active { display: flex; }
+        .page.active {
+            display: flex;
+        }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Soft Glass Surfaces */
-        .surface-card {
+        h1, h2, h3 { margin-bottom: 10px; }
+        p { line-height: 1.5; margin-bottom: 15px; }
+
+        /* Glassmorphism Cards */
+        .card {
             background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--card-border);
-            border-radius: 22px;
-            padding: 18px;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .greeting-header {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-top: 4px;
-        }
-
-        .greeting-sub {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        /* Mood Selector Row */
-        .mood-faces-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 16px 0 8px 0;
-        }
-
-        .mood-face-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .face-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            transition: transform 0.2s;
-        }
-
-        .mood-face-btn.selected .face-icon {
-            transform: scale(1.15);
-            box-shadow: 0 0 0 3px var(--accent-primary);
-        }
-
-        .face-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        /* Buttons & Pills */
-        .action-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #D48BEB 0%, #B892F7 100%);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 14px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(184, 146, 247, 0.35);
-            margin-top: 8px;
-            transition: transform 0.15s;
-        }
-
-        .action-btn:active { transform: scale(0.98); }
-
-        .tag-pill {
-            display: inline-flex;
-            align-items: center;
-            padding: 8px 14px;
-            border-radius: 50px;
-            font-size: 0.82rem;
-            font-weight: 500;
-            margin: 4px;
-            cursor: pointer;
-            border: 1px solid transparent;
-        }
-
-        .tag-pill.pleasant {
-            background: #E6FAEE;
-            color: #267A47;
-            border-color: #BDEFD0;
-        }
-
-        .tag-pill.difficult {
-            background: #F1EAFF;
-            color: #5D3799;
-            border-color: #D9C7FA;
-        }
-
-        .tag-pill.selected {
-            box-shadow: 0 0 0 2px var(--accent-primary);
-        }
-
-        /* Input Controls */
-        textarea, input[type="text"] {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(126, 107, 144, 0.2);
-            border-radius: 14px;
-            padding: 12px 14px;
-            color: var(--text-main);
-            font-size: 0.9rem;
-            outline: none;
-            margin-top: 8px;
-        }
-
-        body.theme-dark textarea, body.theme-dark input[type="text"] {
-            background: rgba(0, 0, 0, 0.25);
-        }
-
-        /* Rich Text Editor Toolbar */
-        .color-dots-row {
-            display: flex;
-            gap: 8px;
-            margin: 10px 0;
-            align-items: center;
-        }
-
-        .color-dot {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .format-btn {
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 8px;
-            padding: 4px 10px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        /* Color Swatches Grid in Settings */
-        .swatch-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .swatch-circle {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            color: white;
-            font-weight: bold;
-        }
-
-        /* Bottom Tab Navigation Bar */
-        .bottom-nav {
-            position: fixed;
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 32px);
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border);
-            border-radius: 35px;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-            box-shadow: 0 10px 30px rgba(110, 80, 140, 0.15);
-            z-index: 500;
-        }
-
-        body.theme-dark .bottom-nav {
-            background: rgba(20, 5, 33, 0.9);
-        }
-
-        .nav-item {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 0.72rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            cursor: pointer;
-            padding: 6px 14px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        /* Buttons & Inputs */
+        button {
+            background: rgba(255,255,255,0.4);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
             transition: all 0.2s;
         }
 
-        .nav-item span { font-size: 1.15rem; }
+        button:active { transform: scale(0.95); }
+        
+        button.primary {
+            background: #d49dfc;
+            color: #fff;
+            border: none;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.3);
+            font-family: inherit;
+            color: var(--text);
+            margin-bottom: 10px;
+            outline: none;
+        }
+
+        [data-theme="dark"] input, [data-theme="dark"] textarea, [data-theme="dark"] select {
+            background: rgba(0,0,0,0.2);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        .nav-item {
+            font-size: 12px;
+            text-align: center;
+            opacity: 0.6;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
         .nav-item.active {
-            color: var(--text-main);
-            background: var(--accent-pill);
+            opacity: 1;
+            font-weight: 700;
+            color: #a855f7;
+        }
+
+        .nav-item .icon { font-size: 20px; display: block; margin-bottom: 4px; }
+
+        /* Floating Action Button (+ Button) */
+        .fab {
+            position: fixed;
+            bottom: 85px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #d49dfc;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: none;
+            z-index: 90;
+            cursor: pointer;
+        }
+
+        /* Sub Navigation */
+        .sub-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sub-nav div {
+            padding: 10px;
+            cursor: pointer;
             font-weight: 600;
+            opacity: 0.5;
         }
 
-        .entry-item {
-            border-bottom: 1px solid rgba(126, 107, 144, 0.1);
-            padding: 10px 0;
-            font-size: 0.88rem;
+        .sub-nav div.active {
+            opacity: 1;
+            border-bottom: 2px solid #a855f7;
         }
 
-        .entry-item:last-child { border-bottom: none; }
+        /* Mood specific */
+        .mood-row { display: flex; justify-content: space-between; margin: 20px 0; }
+        .mood-btn {
+            font-size: 30px;
+            background: none;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            filter: grayscale(100%);
+            transition: 0.2s;
+        }
+        .mood-btn.selected, .mood-btn:hover { filter: grayscale(0%); transform: scale(1.2); }
+        
+        /* Feelings specific */
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
+        .tag {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: 0.2s;
+        }
+        .tag.pleasant { background: rgba(180, 230, 180, 0.4); }
+        .tag.difficult { background: rgba(255, 180, 180, 0.4); }
+        .tag.selected { border: 2px solid #a855f7; }
+
+        /* Journal Toolbar */
+        .journal-tools {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        .color-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+        
+        /* Plant Pet specific */
+        .plant-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 40vh;
+        }
+        .plant-graphic {
+            font-size: 80px;
+            transition: 0.5s;
+        }
+        
+        /* Settings specific */
+        .slider-group { margin-bottom: 15px; }
+        .slider-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px;}
+        input[type="color"] { padding: 0; height: 40px; border: none; border-radius: 8px; cursor: pointer; }
+
+        /* History logs */
+        .log-item { border-bottom: 1px solid var(--border); padding: 10px 0; }
+        .log-item:last-child { border-bottom: none; }
+        .log-date { font-size: 12px; opacity: 0.6; }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Top App Title Bar -->
-        <div class="app-top-bar">
-            <div class="app-title">Your days <span>better</span></div>
-            <div class="saved-status">● Saved locally</div>
+    <div class="app-container" id="app">
+        
+        <!-- ================= MOOD TAB ================= -->
+        <div class="page active" id="page-mood">
+            <div class="sub-nav">
+                <div class="active" onclick="switchSubTab('mood', 'log')">Log</div>
+                <div onclick="switchSubTab('mood', 'stats')">Stats</div>
+            </div>
+            
+            <div id="mood-log-view">
+                <div class="card">
+                    <h2 id="greeting">Good morning, Friend</h2>
+                    <p>How are you feeling today?</p>
+                    
+                    <div class="mood-row">
+                        <button class="mood-btn" onclick="selectMood('Rough', '😢')">😢</button>
+                        <button class="mood-btn" onclick="selectMood('Low', '🙁')">🙁</button>
+                        <button class="mood-btn" onclick="selectMood('Okay', '😐')">😐</button>
+                        <button class="mood-btn" onclick="selectMood('Good', '🙂')">🙂</button>
+                        <button class="mood-btn" onclick="selectMood('Great', '😄')">😄</button>
+                    </div>
+                    
+                    <input type="text" id="mood-note" placeholder="Add a short note (optional)">
+                    <button class="primary" style="width:100%" onclick="saveMood()">Log Mood</button>
+                </div>
+
+                <h3>Recent Moods</h3>
+                <div class="card" id="mood-history"></div>
+            </div>
+
+            <div id="mood-stats-view" style="display:none;">
+                <div class="card">
+                    <h2>Mood Stats</h2>
+                    <p>Keep logging to see your patterns! (Visuals coming soon)</p>
+                </div>
+            </div>
         </div>
 
-        <!-- TAB 1: MOOD -->
-        <section id="tab-mood" class="tab-section active">
-            <div class="sub-tab-nav">
-                <button class="sub-tab-btn active" onclick="switchSubTab('mood-log', this)">Log</button>
-                <button class="sub-tab-btn" onclick="switchSubTab('mood-stats', this)">Stats</button>
+        <!-- ================= FEELINGS TAB ================= -->
+        <div class="page" id="page-feelings">
+            <div class="sub-nav">
+                <div class="active" onclick="switchSubTab('feelings', 'log')">Log</div>
+                <div onclick="switchSubTab('feelings', 'stats')">Balance</div>
             </div>
 
-            <!-- Mood Log Sub-View -->
-            <div id="sub-mood-log" class="sub-view" style="display: flex; flex-direction: column; gap: 14px;">
-                <div class="surface-card">
-                    <div class="greeting-sub" id="currentDateStr">Sunday, Nov 1</div>
-                    <div class="greeting-header">Good day!</div>
-                    <div class="greeting-sub">A fresh page. How does it feel right now?</div>
-
-                    <div class="mood-faces-row">
-                        <button class="mood-face-btn" onclick="selectMoodFace(this, 'Rough', '#8875B4')">
-                            <div class="face-icon" style="background:#E3DCF5; color:#5D4696;">☹️</div>
-                            <span class="face-label">Rough</span>
-                        </button>
-                        <button class="mood-face-btn" onclick="selectMoodFace(this, 'Low', '#5D9CEC')">
-                            <div class="face-icon" style="background:#D9E8FC; color:#2A68C2;">🙁</div>
-                            <span class="face-label">Low</span>
-                        </button>
-                        <button class="mood-face-btn" onclick="selectMoodFace(this, 'Okay', '#4FC1E9')">
-                            <div class="face-icon" style="background:#D6F4FF; color:#1286B1;">😐</div>
-                            <span class="face-label">Okay</span>
-                        </button>
-                        <button class="mood-face-btn selected" onclick="selectMoodFace(this, 'Good', '#A0D468')">
-                            <div class="face-icon" style="background:#E4F5D2; color:#548A1B;">🙂</div>
-                            <span class="face-label">Good</span>
-                        </button>
-                        <button class="mood-face-btn" onclick="selectMoodFace(this, 'Great', '#FFCE54')">
-                            <div class="face-icon" style="background:#FFF1C9; color:#A67B0C;">😄</div>
-                            <span class="face-label">Great</span>
-                        </button>
+            <div id="feelings-log-view">
+                <div class="card">
+                    <h2>What are you feeling?</h2>
+                    <p>Pick as many as fit.</p>
+                    
+                    <h4 style="margin: 10px 0;">Pleasant</h4>
+                    <div class="tags" id="pleasant-tags">
+                        <div class="tag pleasant" onclick="toggleTag(this, 'pleasant')">cheerful</div>
+                        <div class="tag pleasant" onclick="toggleTag(this, 'pleasant')">happy</div>
+                        <div class="tag pleasant" onclick="toggleTag(this, 'pleasant')">hopeful</div>
+                        <div class="tag pleasant" onclick="toggleTag(this, 'pleasant')">calm</div>
+                        <div class="tag pleasant" onclick="toggleTag(this, 'pleasant')">grateful</div>
+                        <div class="tag pleasant" onclick="toggleTag(this, 'pleasant')">loved</div>
                     </div>
 
-                    <textarea id="moodNote" rows="2" placeholder="Add a short note (optional)..."></textarea>
-                    <button class="action-btn" onclick="saveMoodLog()">Log mood</button>
-                </div>
+                    <h4 style="margin: 10px 0;">Difficult</h4>
+                    <div class="tags" id="difficult-tags">
+                        <div class="tag difficult" onclick="toggleTag(this, 'difficult')">sad</div>
+                        <div class="tag difficult" onclick="toggleTag(this, 'difficult')">angry</div>
+                        <div class="tag difficult" onclick="toggleTag(this, 'difficult')">anxious</div>
+                        <div class="tag difficult" onclick="toggleTag(this, 'difficult')">tired</div>
+                        <div class="tag difficult" onclick="toggleTag(this, 'difficult')">stressed</div>
+                    </div>
 
-                <div class="surface-card">
-                    <div style="font-size:0.8rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px;">Recent Moods</div>
-                    <div id="moodRecentList"><p style="color:var(--text-muted); font-size:0.85rem;">No recent logs yet.</p></div>
+                    <input type="text" id="feeling-note" placeholder="What is behind it? (optional)">
+                    <button class="primary" style="width:100%" onclick="saveFeelings()">Log Feelings</button>
                 </div>
             </div>
 
-            <!-- Mood Stats Sub-View -->
-            <div id="sub-mood-stats" class="sub-view" style="display: none; flex-direction: column; gap: 14px;">
-                <div class="surface-card">
-                    <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Mood Insights</div>
-                    <div id="moodStatsSummary" style="font-size:0.9rem; line-height:1.6;">
-                        Log your first mood to generate personalized stats!
+            <div id="feelings-stats-view" style="display:none;">
+                <div class="card">
+                    <h2>Emotional Balance</h2>
+                    <p id="balance-text">No logs yet.</p>
+                    <div style="height: 20px; background: #e0e0e0; border-radius: 10px; overflow: hidden; display: flex;">
+                        <div id="bar-pleasant" style="width: 0%; background: #a3d9a5; transition: width 0.5s;"></div>
+                        <div id="bar-difficult" style="width: 0%; background: #f4a6a6; transition: width 0.5s;"></div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- TAB 2: FEELINGS -->
-        <section id="tab-feelings" class="tab-section">
-            <div class="sub-tab-nav">
-                <button class="sub-tab-btn active" onclick="switchSubTab('feelings-log', this)">Log</button>
-                <button class="sub-tab-btn" onclick="switchSubTab('feelings-stats', this)">Stats</button>
+        <!-- ================= JOURNAL TAB ================= -->
+        <div class="page" id="page-journal">
+            <div class="card" style="flex: 1; display: flex; flex-direction: column;">
+                <div style="display: flex; justify-content: space-between;">
+                    <h2>Write it out</h2>
+                    <button onclick="randomPrompt()" style="padding: 5px 10px; font-size: 12px;">Prompt 🔄</button>
+                </div>
+                <p id="journal-prompt" style="font-style: italic; opacity: 0.8; margin-bottom: 10px;">"How do you want today to feel?"</p>
+                
+                <input type="text" id="journal-title" placeholder="Title (optional)">
+                
+                <!-- Rich Text Toolbar -->
+                <div class="journal-tools">
+                    <button onclick="formatText('bold')" style="padding: 5px 10px; font-weight: bold;">B</button>
+                    <button onclick="formatText('italic')" style="padding: 5px 10px; font-style: italic;">I</button>
+                    <div class="color-dot" style="background: #333;" onclick="formatText('foreColor', '#333')"></div>
+                    <div class="color-dot" style="background: #d49dfc;" onclick="formatText('foreColor', '#d49dfc')"></div>
+                    <div class="color-dot" style="background: #8ec5fc;" onclick="formatText('foreColor', '#8ec5fc')"></div>
+                </div>
+
+                <div id="journal-content" contenteditable="true" style="flex: 1; background: rgba(255,255,255,0.4); border-radius: 12px; padding: 15px; outline: none; overflow-y: auto; min-height: 200px;">
+                    Start writing here...
+                </div>
+                
+                <button class="primary" style="width:100%; margin-top: 15px;" onclick="saveJournal()">Save Entry</button>
+            </div>
+        </div>
+
+        <!-- ================= PLANT PET TAB ================= -->
+        <div class="page" id="page-plant">
+            <div class="card" style="text-align: center;">
+                <h2>Your Little Friend</h2>
+                <p>Log a mood or journal entry every day to help it grow!</p>
+                
+                <div class="plant-container">
+                    <div class="plant-graphic" id="plant-graphic">🌱</div>
+                </div>
+                
+                <h3 id="plant-status">Status: Thirsty</h3>
+                <p style="font-size: 14px; opacity: 0.8;">Streak: <span id="plant-streak">0</span> days</p>
+            </div>
+        </div>
+
+        <!-- ================= SETTINGS TAB ================= -->
+        <div class="page" id="page-settings">
+            <div class="card">
+                <h2>Your Name</h2>
+                <input type="text" id="settings-name" placeholder="Enter your name" onchange="saveName()">
             </div>
 
-            <div id="sub-feelings-log" class="sub-view" style="display: flex; flex-direction: column; gap: 14px;">
-                <div class="surface-card">
-                    <div class="greeting-header">What are you feeling?</div>
-                    <div class="greeting-sub" style="margin-bottom:12px;">Pick as many as fit, there are no wrong ones.</div>
-
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:8px 0 4px 0;">Pleasant</div>
-                    <div id="pleasantPills">
-                        <span class="tag-pill pleasant" onclick="toggleTag(this, 'cheerful', 'pleasant')">cheerful</span>
-                        <span class="tag-pill pleasant" onclick="toggleTag(this, 'happy', 'pleasant')">happy</span>
-                        <span class="tag-pill pleasant" onclick="toggleTag(this, 'hopeful', 'pleasant')">hopeful</span>
-                        <span class="tag-pill pleasant" onclick="toggleTag(this, 'calm', 'pleasant')">calm</span>
-                        <span class="tag-pill pleasant" onclick="toggleTag(this, 'grateful', 'pleasant')">grateful</span>
-                        <span class="tag-pill pleasant" onclick="toggleTag(this, 'loved', 'pleasant')">loved</span>
-                    </div>
-
-                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:12px 0 4px 0;">Difficult</div>
-                    <div id="difficultPills">
-                        <span class="tag-pill difficult" onclick="toggleTag(this, 'sad', 'difficult')">sad</span>
-                        <span class="tag-pill difficult" onclick="toggleTag(this, 'anxious', 'difficult')">anxious</span>
-                        <span class="tag-pill difficult" onclick="toggleTag(this, 'lonely', 'difficult')">lonely</span>
-                        <span class="tag-pill difficult" onclick="toggleTag(this, 'stressed', 'difficult')">stressed</span>
-                        <span class="tag-pill difficult" onclick="toggleTag(this, 'tired', 'difficult')">tired</span>
-                        <span class="tag-pill difficult" onclick="toggleTag(this, 'overwhelmed', 'difficult')">overwhelmed</span>
-                    </div>
-
-                    <input type="text" id="customFeelingInput" placeholder="+ Add your own feeling tag..." style="margin-top:12px;">
-                    <button class="action-btn" onclick="saveFeelingsLog()">Log feelings</button>
+            <div class="card">
+                <h2>Dreamy Background</h2>
+                <p style="font-size: 14px;">Adjust your 3-color gradient.</p>
+                <div class="slider-group">
+                    <label>Color 1</label>
+                    <input type="color" id="color1" value="#e0c3fc" oninput="updateGradient()">
+                </div>
+                <div class="slider-group">
+                    <label>Color 2</label>
+                    <input type="color" id="color2" value="#8ec5fc" oninput="updateGradient()">
+                </div>
+                <div class="slider-group">
+                    <label>Color 3</label>
+                    <input type="color" id="color3" value="#fbc2eb" oninput="updateGradient()">
                 </div>
             </div>
 
-            <div id="sub-feelings-stats" class="sub-view" style="display: none; flex-direction: column; gap: 14px;">
-                <div class="surface-card">
-                    <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Balance & Breakdown</div>
-                    <div id="feelingsBalanceBar" style="height:10px; background:#E2D5FC; border-radius:10px; overflow:hidden; display:flex; margin-bottom:8px;">
-                        <div id="pleasantFill" style="width:70%; background:#8CE4AC; height:100%;"></div>
-                    </div>
-                    <div id="feelingsRatioText" style="font-size:0.85rem; color:var(--text-muted); margin-bottom:14px;">Pleasant 70% · Difficult 30%</div>
-                    <div id="mostFeltList" style="font-size:0.9rem;"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 3: JOURNAL -->
-        <section id="tab-journal" class="tab-section">
-            <div class="surface-card">
-                <div class="greeting-header">Write it out</div>
-                <div class="greeting-sub" id="journalPromptText" style="margin-bottom:10px; font-style:italic; color:var(--accent-primary);">"How do you want today to feel?"</div>
-
-                <input type="text" id="journalTitle" placeholder="Title (optional)">
-
-                <div class="color-dots-row">
-                    <span style="font-size:0.8rem; color:var(--text-muted); margin-right:4px;">Color:</span>
-                    <div class="color-dot" style="background:#331B45" onclick="setEditorColor('#331B45')"></div>
-                    <div class="color-dot" style="background:#C972DB" onclick="setEditorColor('#C972DB')"></div>
-                    <div class="color-dot" style="background:#5D9CEC" onclick="setEditorColor('#5D9CEC')"></div>
-                    <div class="color-dot" style="background:#48CFAD" onclick="setEditorColor('#48CFAD')"></div>
-                    <div class="color-dot" style="background:#ED5565" onclick="setEditorColor('#ED5565')"></div>
-                    <button class="format-btn" onclick="formatEditor('bold')">B</button>
-                    <button class="format-btn" onclick="formatEditor('italic')"><i>I</i></button>
-                </div>
-
-                <textarea id="journalBody" rows="6" placeholder="Start writing privately..."></textarea>
-                <button class="action-btn" onclick="saveJournalLog()">Save entry</button>
+            <div class="card">
+                <h2>Appearance</h2>
+                <button style="width: 100%;" onclick="toggleTheme()" id="theme-btn">Toggle Dark Mode</button>
             </div>
 
-            <div class="surface-card">
-                <div style="font-size:0.8rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px;">Past Entries</div>
-                <div id="journalEntriesList"><p style="color:var(--text-muted); font-size:0.85rem;">No saved entries yet.</p></div>
-            </div>
-        </section>
-
-        <!-- TAB 4: SETTINGS -->
-        <section id="tab-settings" class="tab-section">
-            <div class="surface-card">
-                <div class="greeting-header" style="margin-bottom:12px;">Settings</div>
-
-                <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Appearance Mode</div>
-                <div style="display:flex; gap:10px; margin-bottom:16px;">
-                    <button class="format-btn" style="flex:1; padding:10px;" onclick="setLightDarkTheme(false)">☀️ Light</button>
-                    <button class="format-btn" style="flex:1; padding:10px;" onclick="setLightDarkTheme(true)">🌙 Dark</button>
-                </div>
-
-                <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Color Palettes</div>
-                <div class="swatch-grid">
-                    <div class="swatch-circle" style="background:linear-gradient(135deg, #FEE5F1, #EAE0F9);" onclick="applyPalette('radial-gradient(circle at 10% 10%, #FEE5F1 0%, #EAE0F9 45%, #E3F2FD 85%)')">Dusk</div>
-                    <div class="swatch-circle" style="background:linear-gradient(135deg, #E0F7FA, #E1BEE7);" onclick="applyPalette('radial-gradient(circle at 10% 10%, #E0F7FA 0%, #E1BEE7 50%, #FFF3E0 100%)')">Berry</div>
-                    <div class="swatch-circle" style="background:linear-gradient(135deg, #E8F5E9, #C8E6C9);" onclick="applyPalette('radial-gradient(circle at 10% 10%, #E8F5E9 0%, #C8E6C9 50%, #E0F2F1 100%)')">Moss</div>
-                    <div class="swatch-circle" style="background:linear-gradient(135deg, #FFF3E0, #FFE0B2);" onclick="applyPalette('radial-gradient(circle at 10% 10%, #FFF3E0 0%, #FFE0B2 50%, #FFCCBC 100%)')">Peach</div>
-                    <div class="swatch-circle" style="background:linear-gradient(135deg, #E1F5FE, #B3E5FC);" onclick="applyPalette('radial-gradient(circle at 10% 10%, #E1F5FE 0%, #B3E5FC 50%, #E8EAF6 100%)')">Tide</div>
-                    <div class="swatch-circle" style="background:linear-gradient(135deg, #F3E5F5, #E1BEE7);" onclick="applyPalette('radial-gradient(circle at 10% 10%, #F3E5F5 0%, #E1BEE7 50%, #D1C4E9 100%)')">Orchid</div>
-                </div>
-
-                <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:16px 0 6px 0;">App Font</div>
-                <select id="fontSelect" onchange="changeFont(this.value)" style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(0,0,0,0.1);">
+            <div class="card">
+                <h2>Font Style</h2>
+                <select id="font-select" onchange="changeFont()">
                     <option value="'Quicksand', sans-serif">Clean (Quicksand)</option>
                     <option value="'Comfortaa', cursive">Soft (Comfortaa)</option>
-                    <option value="'Great Vibes', cursive">Elegance (Great Vibes)</option>
-                    <option value="'Dancing Script', cursive">Kind-hearted Cursive</option>
-                    <option value="'Pacifico', cursive">Fresh (Pacifico)</option>
-                    <option value="'Sacramento', cursive">Spectacular Script</option>
+                    <option value="'Great Vibes', cursive">Elegant (Great Vibes)</option>
                 </select>
-
-                <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:16px 0 6px 0;">Local Data</div>
-                <button class="format-btn" style="width:100%; padding:10px;" onclick="exportJSON()">Export Private Data Backup (.json)</button>
             </div>
-        </section>
+
+            <div class="card">
+                <h2>Data</h2>
+                <p style="font-size: 14px;">Everything is saved privately on your device.</p>
+                <button style="width: 100%; margin-bottom: 10px;" onclick="exportData()">Export Backup (.json)</button>
+                <button style="width: 100%; background: #ffcccc;" onclick="clearData()">Clear All Data</button>
+            </div>
+        </div>
+
     </div>
 
-    <!-- MAIN BOTTOM TAB NAVIGATION (4 DISTINCT TABS) -->
-    <nav class="bottom-nav">
-        <button class="nav-item active" onclick="switchMainTab('mood', this)"><span>🙂</span>Mood</button>
-        <button class="nav-item" onclick="switchMainTab('feelings', this)"><span>♡</span>Feelings</button>
-        <button class="nav-item" onclick="switchMainTab('journal', this)"><span>📖</span>Journal</button>
-        <button class="nav-item" onclick="switchMainTab('settings', this)"><span>⚙️</span>Settings</button>
-    </nav>
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('mood')">
+            <span class="icon">😊</span>Mood
+        </div>
+        <div class="nav-item" onclick="switchTab('feelings')">
+            <span class="icon">💜</span>Feelings
+        </div>
+        <div class="nav-item" onclick="switchTab('journal')">
+            <span class="icon">📖</span>Journal
+        </div>
+        <div class="nav-item" onclick="switchTab('plant')">
+            <span class="icon">🪴</span>Plant
+        </div>
+        <div class="nav-item" onclick="switchTab('settings')">
+            <span class="icon">⚙️</span>Settings
+        </div>
+    </div>
+
+    <!-- Floating Add Button (Only shows on Journal/Feelings) -->
+    <button class="fab" id="fab-btn" style="display: none;" onclick="fabAction()">+</button>
 
     <script>
-        // Set current date string
-        const options = { weekday: 'long', month: 'short', day: 'numeric' };
-        document.getElementById('currentDateStr').innerText = new Date().toLocaleDateString('en-US', options);
+        // --- App State & Local Storage ---
+        let appData = JSON.parse(localStorage.getItem('yourDaysBetterData')) || {
+            name: "",
+            theme: "light",
+            font: "'Quicksand', sans-serif",
+            colors: ["#e0c3fc", "#8ec5fc", "#fbc2eb"],
+            moods: [],
+            feelings: [],
+            journals: [],
+            plantStreak: 0,
+            lastLogDate: null
+        };
 
-        /* Main Navigation Switching */
-        function switchMainTab(tabId, btn) {
-            document.querySelectorAll('.tab-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-            btn.classList.add('active');
+        let currentMoodSelection = null;
+
+        // --- Initialization ---
+        function init() {
+            // Set Name
+            if(appData.name) {
+                document.getElementById('greeting').innerText = `Good morning, ${appData.name}`;
+            }
+            document.getElementById('settings-name').value = appData.name;
+
+            // Set Colors
+            document.getElementById('color1').value = appData.colors[0];
+            document.getElementById('color2').value = appData.colors[1];
+            document.getElementById('color3').value = appData.colors[2];
+            updateGradient();
+
+            // Set Theme
+            document.documentElement.setAttribute('data-theme', appData.theme);
+            if(appData.theme === 'dark') document.getElementById('theme-btn').innerText = "Toggle Light Mode";
+
+            // Set Font
+            document.documentElement.style.setProperty('--font', appData.font);
+            document.getElementById('font-select').value = appData.font;
+
+            // Load Data
+            renderMoodHistory();
+            updateBalanceStats();
+            updatePlant();
+            
+            // Set Greeting based on time
+            const hour = new Date().getHours();
+            let greet = "Good morning";
+            if(hour > 12) greet = "Good afternoon";
+            if(hour > 18) greet = "Good evening";
+            const nameStr = appData.name ? `, ${appData.name}` : ", Friend";
+            document.getElementById('greeting').innerText = `${greet}${nameStr}`;
         }
 
-        /* Sub Tab Navigation (Log vs Stats inside features) */
-        function switchSubTab(subId, btn) {
-            const parent = btn.parentElement;
-            parent.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const section = parent.parentElement;
-            section.querySelectorAll('.sub-view').forEach(v => v.style.display = 'none');
-            document.getElementById('sub-' + subId).style.display = 'flex';
+        function saveData() {
+            localStorage.setItem('yourDaysBetterData', JSON.stringify(appData));
         }
 
-        /* Mood Selection */
-        let currentMood = 'Good';
-        function selectMoodFace(btn, moodName) {
-            document.querySelectorAll('.mood-face-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            currentMood = moodName;
-        }
+        // --- Navigation ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById(`page-${tabId}`).classList.add('active');
+            event.currentTarget.classList.add('active');
 
-        /* Feelings Selection */
-        let selectedTags = [];
-        function toggleTag(el, tag, type) {
-            el.classList.toggle('selected');
-            if(el.classList.contains('selected')) {
-                selectedTags.push({ tag, type });
+            // Show/Hide FAB
+            const fab = document.getElementById('fab-btn');
+            if(tabId === 'journal' || tabId === 'feelings') {
+                fab.style.display = 'flex';
             } else {
-                selectedTags = selectedTags.filter(t => t.tag !== tag);
+                fab.style.display = 'none';
             }
         }
 
-        /* Private Storage Handling */
-        let moods = JSON.parse(localStorage.getItem('yb_v2_moods') || '[]');
-        let feelings = JSON.parse(localStorage.getItem('yb_v2_feelings') || '[]');
-        let journals = JSON.parse(localStorage.getItem('yb_v2_journals') || '[]');
+        function switchSubTab(parent, sub) {
+            event.currentTarget.parentElement.querySelectorAll('div').forEach(d => d.classList.remove('active'));
+            event.currentTarget.classList.add('active');
 
-        function saveMoodLog() {
-            const note = document.getElementById('moodNote').value;
-            moods.unshift({ mood: currentMood, note, date: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) });
-            localStorage.setItem('yb_v2_moods', JSON.stringify(moods));
-            document.getElementById('moodNote').value = '';
-            renderMoods();
-            alert('Mood logged cleanly!');
+            if(parent === 'mood') {
+                document.getElementById('mood-log-view').style.display = sub === 'log' ? 'block' : 'none';
+                document.getElementById('mood-stats-view').style.display = sub === 'stats' ? 'block' : 'none';
+            } else if(parent === 'feelings') {
+                document.getElementById('feelings-log-view').style.display = sub === 'log' ? 'block' : 'none';
+                document.getElementById('feelings-stats-view').style.display = sub === 'stats' ? 'block' : 'none';
+            }
         }
 
-        function saveFeelingsLog() {
-            const custom = document.getElementById('customFeelingInput').value.trim();
-            if(custom) selectedTags.push({ tag: custom, type: 'pleasant' });
-            if(selectedTags.length === 0) return alert('Select at least one feeling!');
-
-            feelings.unshift({ tags: [...selectedTags], date: new Date().toLocaleDateString() });
-            localStorage.setItem('yb_v2_feelings', JSON.stringify(feelings));
-            document.getElementById('customFeelingInput').value = '';
-            renderFeelingsStats();
-            alert('Feelings saved!');
+        function fabAction() {
+            // Simple focus logic for the FAB
+            const activePage = document.querySelector('.page.active');
+            if(activePage.id === 'page-journal') {
+                document.getElementById('journal-content').focus();
+            } else if(activePage.id === 'page-feelings') {
+                document.getElementById('feeling-note').focus();
+            }
         }
 
-        function saveJournalLog() {
-            const title = document.getElementById('journalTitle').value;
-            const body = document.getElementById('journalBody').value;
-            if(!body.trim()) return alert('Write a little before saving!');
-
-            journals.unshift({ title, body, date: new Date().toLocaleDateString() });
-            localStorage.setItem('yb_v2_journals', JSON.stringify(journals));
-            document.getElementById('journalTitle').value = '';
-            document.getElementById('journalBody').value = '';
-            renderJournals();
-            alert('Journal entry saved privately!');
+        // --- Mood Logic ---
+        function selectMood(mood, emoji) {
+            document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            currentMoodSelection = { mood, emoji };
         }
 
-        function renderMoods() {
-            const container = document.getElementById('moodRecentList');
-            if(!moods.length) return container.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No recent logs yet.</p>';
-            container.innerHTML = moods.slice(0, 5).map(m => `
-                <div class="entry-item">
-                    <strong>${m.mood}</strong> <span style="float:right; font-size:0.75rem; color:var(--text-muted);">${m.date}</span>
-                    ${m.note ? `<div style="color:var(--text-muted); font-size:0.82rem; margin-top:2px;">${m.note}</div>` : ''}
+        function saveMood() {
+            if(!currentMoodSelection) return alert("Please select a mood face!");
+            
+            const note = document.getElementById('mood-note').value;
+            const date = new Date().toLocaleString();
+            
+            appData.moods.unshift({ date, mood: currentMoodSelection.mood, emoji: currentMoodSelection.emoji, note });
+            saveData();
+            
+            document.getElementById('mood-note').value = '';
+            document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+            currentMoodSelection = null;
+            
+            renderMoodHistory();
+            checkStreak();
+            alert("Mood logged!");
+        }
+
+        function renderMoodHistory() {
+            const container = document.getElementById('mood-history');
+            container.innerHTML = appData.moods.slice(0, 5).map(m => `
+                <div class="log-item">
+                    <div style="font-size: 20px;">${m.emoji} <b style="font-size:16px;">${m.mood}</b></div>
+                    <div class="log-date">${m.date}</div>
+                    ${m.note ? `<p style="font-size: 14px; margin-top:5px;">${m.note}</p>` : ''}
                 </div>
-            `).join('');
-
-            document.getElementById('moodStatsSummary').innerHTML = `
-                Total Mood Logs: <strong>${moods.length}</strong><br>
-                Latest Mood: <strong>${moods[0].mood}</strong>
-            `;
+            `).join('') || '<p style="font-size:14px; opacity:0.6;">No recent moods.</p>';
         }
 
-        function renderFeelingsStats() {
-            let totalPleasant = 0, totalDifficult = 0;
-            feelings.forEach(f => {
-                f.tags.forEach(t => {
-                    if(t.type === 'pleasant') totalPleasant++; else totalDifficult++;
+        // --- Feelings Logic ---
+        function toggleTag(el, type) {
+            el.classList.toggle('selected');
+        }
+
+        function saveFeelings() {
+            const selectedTags = Array.from(document.querySelectorAll('.tag.selected')).map(t => ({
+                name: t.innerText,
+                type: t.classList.contains('pleasant') ? 'pleasant' : 'difficult'
+            }));
+            
+            if(selectedTags.length === 0) return alert("Select at least one feeling.");
+            
+            const note = document.getElementById('feeling-note').value;
+            const date = new Date().toLocaleString();
+            
+            appData.feelings.unshift({ date, tags: selectedTags, note });
+            saveData();
+            
+            document.querySelectorAll('.tag').forEach(t => t.classList.remove('selected'));
+            document.getElementById('feeling-note').value = '';
+            
+            updateBalanceStats();
+            checkStreak();
+            alert("Feelings logged!");
+        }
+
+        function updateBalanceStats() {
+            let pleasantCount = 0;
+            let difficultCount = 0;
+            
+            appData.feelings.forEach(log => {
+                log.tags.forEach(tag => {
+                    if(tag.type === 'pleasant') pleasantCount++;
+                    if(tag.type === 'difficult') difficultCount++;
                 });
             });
-            const total = totalPleasant + totalDifficult || 1;
-            const pPct = Math.round((totalPleasant / total) * 100);
-            const dPct = 100 - pPct;
 
-            document.getElementById('pleasantFill').style.width = pPct + '%';
-            document.getElementById('feelingsRatioText').innerText = `Pleasant ${pPct}% · Difficult ${dPct}%`;
+            const total = pleasantCount + difficultCount;
+            if(total === 0) {
+                document.getElementById('balance-text').innerText = "No logs yet.";
+                return;
+            }
+
+            const pleasantPct = Math.round((pleasantCount / total) * 100);
+            const difficultPct = 100 - pleasantPct;
+
+            document.getElementById('balance-text').innerText = `Pleasant ${pleasantPct}% · Difficult ${difficultPct}%`;
+            document.getElementById('bar-pleasant').style.width = `${pleasantPct}%`;
+            document.getElementById('bar-difficult').style.width = `${difficultPct}%`;
         }
 
-        function renderJournals() {
-            const container = document.getElementById('journalEntriesList');
-            if(!journals.length) return container.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No saved entries yet.</p>';
-            container.innerHTML = journals.map(j => `
-                <div class="entry-item">
-                    <strong>${j.title || 'Untitled Entry'}</strong> <span style="float:right; font-size:0.75rem; color:var(--text-muted);">${j.date}</span>
-                    <div style="margin-top:4px; font-size:0.85rem;">${j.body}</div>
-                </div>
-            `).join('');
+        // --- Journal Logic ---
+        const prompts = [
+            "How do you want today to feel?",
+            "What is one thing you are grateful for right now?",
+            "Where do you feel stress in your body, and how can you release it?",
+            "Describe a small win you had recently.",
+            "What is something you need to forgive yourself for?"
+        ];
+
+        function randomPrompt() {
+            const p = prompts[Math.floor(Math.random() * prompts.length)];
+            document.getElementById('journal-prompt').innerText = `"${p}"`;
         }
 
-        /* Customizing Settings */
-        function setLightDarkTheme(isDark) {
-            if(isDark) document.body.classList.add('theme-dark');
-            else document.body.classList.remove('theme-dark');
+        function formatText(command, value = null) {
+            document.execCommand(command, false, value);
+            document.getElementById('journal-content').focus();
         }
 
-        function applyPalette(gradient) {
-            document.documentElement.style.setProperty('--bg-gradient', gradient);
+        function saveJournal() {
+            const title = document.getElementById('journal-title').value;
+            const content = document.getElementById('journal-content').innerHTML;
+            const date = new Date().toLocaleString();
+
+            if(content.trim() === '' || content === 'Start writing here...') {
+                return alert("Write something first!");
+            }
+
+            appData.journals.unshift({ date, title, content });
+            saveData();
+
+            document.getElementById('journal-title').value = '';
+            document.getElementById('journal-content').innerHTML = '';
+            checkStreak();
+            alert("Journal saved!");
         }
 
-        function changeFont(fontFamily) {
-            document.documentElement.style.setProperty('--current-font', fontFamily);
+        // --- Plant Logic ---
+        function checkStreak() {
+            const today = new Date().toDateString();
+            
+            if(appData.lastLogDate !== today) {
+                // If logged yesterday, increase streak. Otherwise reset to 1.
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                
+                if(appData.lastLogDate === yesterday.toDateString()) {
+                    appData.plantStreak++;
+                } else {
+                    appData.plantStreak = 1;
+                }
+                
+                appData.lastLogDate = today;
+                saveData();
+                updatePlant();
+            }
         }
 
-        function setEditorColor(color) {
-            document.getElementById('journalBody').style.color = color;
+        function updatePlant() {
+            const plant = document.getElementById('plant-graphic');
+            const status = document.getElementById('plant-status');
+            document.getElementById('plant-streak').innerText = appData.plantStreak;
+
+            if(appData.plantStreak === 0) {
+                plant.innerText = "🌱";
+                status.innerText = "Status: Needs water (log something!)";
+            } else if(appData.plantStreak < 3) {
+                plant.innerText = "🌿";
+                status.innerText = "Status: Growing nicely";
+            } else if(appData.plantStreak < 7) {
+                plant.innerText = "🪴";
+                status.innerText = "Status: Thriving!";
+            } else {
+                plant.innerText = "🌸"; // Flower
+                status.innerText = "Status: Blooming beautifully!";
+            }
         }
 
-        function formatEditor(cmd) {
-            document.execCommand(cmd, false, null);
+        // --- Settings Logic ---
+        function saveName() {
+            appData.name = document.getElementById('settings-name').value;
+            saveData();
+            init(); // Refresh greeting
         }
 
-        function exportJSON() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ moods, feelings, journals }));
-            const dl = document.createElement('a');
-            dl.setAttribute("href", dataStr);
-            dl.setAttribute("download", "your_days_better_backup.json");
-            dl.click();
+        function updateGradient() {
+            const c1 = document.getElementById('color1').value;
+            const c2 = document.getElementById('color2').value;
+            const c3 = document.getElementById('color3').value;
+            
+            document.documentElement.style.setProperty('--c1', c1);
+            document.documentElement.style.setProperty('--c2', c2);
+            document.documentElement.style.setProperty('--c3', c3);
+
+            appData.colors = [c1, c2, c3];
+            saveData();
         }
 
-        renderMoods();
-        renderFeelingsStats();
-        renderJournals();
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            document.getElementById('theme-btn').innerText = `Toggle ${newTheme === 'dark' ? 'Light' : 'Dark'} Mode`;
+            
+            appData.theme = newTheme;
+            saveData();
+        }
+
+        function changeFont() {
+            const font = document.getElementById('font-select').value;
+            document.documentElement.style.setProperty('--font', font);
+            appData.font = font;
+            saveData();
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href",     dataStr);
+            downloadAnchorNode.setAttribute("download", "your_days_better_backup.json");
+            document.body.appendChild(downloadAnchorNode); // required for firefox
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function clearData() {
+            if(confirm("Are you sure? This will delete ALL your logs, journals, and settings permanently.")) {
+                localStorage.removeItem('yourDaysBetterData');
+                location.reload();
+            }
+        }
+
+        // Run init on load
+        window.onload = init;
+
     </script>
 </body>
 </html>
