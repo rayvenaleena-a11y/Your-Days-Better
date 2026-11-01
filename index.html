@@ -5,28 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#f8f4ff">
     <title>Your Days Better</title>
     
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Comfortaa:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Link to PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
     <style>
         :root {
-            --c1: #e0c3fc;
-            --c2: #8ec5fc;
-            --c3: #fbc2eb;
-            --text: #333;
-            --card-bg: rgba(255, 255, 255, 0.6);
-            --nav-bg: rgba(255, 255, 255, 0.85);
-            --border: rgba(255,255,255, 0.4);
-            --font: 'Quicksand', sans-serif;
-        }
-
-        [data-theme="dark"] {
-            --text: #f0f0f0;
-            --card-bg: rgba(30, 30, 30, 0.6);
-            --nav-bg: rgba(20, 20, 20, 0.9);
-            --border: rgba(255,255,255, 0.1);
+            /* Dreamy Mesh Gradient Defaults */
+            --color-1: #e6e6fa; /* Lavender */
+            --color-2: #ffd1dc; /* Pastel Pink */
+            --color-3: #b0e0e6; /* Powder Blue */
+            --text-dark: #3a3a3a;
+            --text-light: #7a7a7a;
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
         }
 
         * {
@@ -37,759 +38,431 @@
         }
 
         body {
-            font-family: var(--font);
-            color: var(--text);
-            background: linear-gradient(135deg, var(--c1), var(--c2), var(--c3));
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-dark);
+            background-color: #f8f4ff;
             height: 100vh;
             overflow: hidden;
-            transition: color 0.3s ease;
+            position: relative;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* The Cloudy/Helichrome Mesh Gradient Background */
+        #mesh-background {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            background-color: var(--color-1);
+            background-image: 
+                radial-gradient(at 10% 20%, var(--color-2) 0px, transparent 50%),
+                radial-gradient(at 90% 10%, var(--color-3) 0px, transparent 50%),
+                radial-gradient(at 50% 80%, var(--color-1) 0px, transparent 50%),
+                radial-gradient(at 80% 90%, var(--color-2) 0px, transparent 50%),
+                radial-gradient(at 20% 90%, var(--color-3) 0px, transparent 50%);
+            transition: background 0.8s ease;
+            filter: blur(40px);
+            transform: scale(1.1); /* Prevents white edges from blur */
         }
 
-        /* Layout */
-        .app-container {
-            height: 100vh;
+        /* Main Container */
+        #app-container {
+            height: 100%;
             display: flex;
             flex-direction: column;
-            padding-bottom: 70px;
+            padding: 20px 15px 100px 15px; /* Bottom padding for nav */
+            overflow-y: auto;
+            scrollbar-width: none; /* Hide scrollbar */
         }
+        #app-container::-webkit-scrollbar { display: none; }
 
+        /* Pages */
         .page {
             display: none;
-            flex-direction: column;
-            height: 100%;
-            overflow-y: auto;
-            padding: 20px;
             animation: fadeIn 0.3s ease;
+            flex: 1;
         }
-
-        .page.active {
-            display: flex;
-        }
+        .page.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1, h2, h3 { margin-bottom: 10px; }
-        p { line-height: 1.5; margin-bottom: 15px; }
+        /* Typography */
+        h1, h2, h3 { font-family: 'Comfortaa', cursive; font-weight: 400; }
+        .header-title { font-size: 1.8rem; margin-bottom: 20px; }
 
-        /* Glassmorphism Cards */
-        .card {
-            background: var(--card-bg);
+        /* Glassmorphism Containers (No giant rigid boxes) */
+        .glass-card {
+            background: var(--glass-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
             border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            padding: 15px;
+            margin-bottom: 12px;
         }
 
-        /* Buttons & Inputs */
-        button {
-            background: rgba(255,255,255,0.4);
-            border: 1px solid var(--border);
-            padding: 10px 20px;
-            border-radius: 15px;
-            font-family: inherit;
-            font-weight: 600;
-            color: var(--text);
+        /* Floating Action Button (The "+" Button) */
+        .fab {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-dark);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: transform 0.2s ease, background 0.3s;
+            z-index: 100;
         }
+        .fab:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.9); }
 
-        button:active { transform: scale(0.95); }
-        
-        button.primary {
-            background: #d49dfc;
-            color: #fff;
-            border: none;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,0.3);
-            font-family: inherit;
-            color: var(--text);
-            margin-bottom: 10px;
-            outline: none;
-        }
-
-        [data-theme="dark"] input, [data-theme="dark"] textarea, [data-theme="dark"] select {
-            background: rgba(0,0,0,0.2);
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-bottom: 20px;
+            cursor: pointer;
         }
 
         /* Bottom Navigation */
-        .bottom-nav {
+        #bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
             height: 70px;
-            background: var(--nav-bg);
-            backdrop-filter: blur(20px);
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            border-top: 1px solid var(--border);
-            z-index: 100;
+            box-shadow: var(--glass-shadow);
+            z-index: 50;
         }
 
         .nav-item {
-            font-size: 12px;
-            text-align: center;
-            opacity: 0.6;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .nav-item.active {
-            opacity: 1;
-            font-weight: 700;
-            color: #a855f7;
-        }
-
-        .nav-item .icon { font-size: 20px; display: block; margin-bottom: 4px; }
-
-        /* Floating Action Button (+ Button) */
-        .fab {
-            position: fixed;
-            bottom: 85px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #d49dfc;
-            color: white;
-            font-size: 24px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            border: none;
-            z-index: 90;
-            cursor: pointer;
-        }
-
-        /* Sub Navigation */
-        .sub-nav {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .sub-nav div {
-            padding: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            opacity: 0.5;
-        }
-
-        .sub-nav div.active {
-            opacity: 1;
-            border-bottom: 2px solid #a855f7;
-        }
-
-        /* Mood specific */
-        .mood-row { display: flex; justify-content: space-between; margin: 20px 0; }
-        .mood-btn {
-            font-size: 30px;
-            background: none;
-            border: none;
-            padding: 5px;
-            cursor: pointer;
-            filter: grayscale(100%);
-            transition: 0.2s;
-        }
-        .mood-btn.selected, .mood-btn:hover { filter: grayscale(0%); transform: scale(1.2); }
-        
-        /* Feelings specific */
-        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
-        .tag {
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: 0.2s;
-        }
-        .tag.pleasant { background: rgba(180, 230, 180, 0.4); }
-        .tag.difficult { background: rgba(255, 180, 180, 0.4); }
-        .tag.selected { border: 2px solid #a855f7; }
-
-        /* Journal Toolbar */
-        .journal-tools {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-        .color-dot {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid white;
-        }
-        
-        /* Plant Pet specific */
-        .plant-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 40vh;
+            color: var(--text-light);
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: color 0.3s;
         }
-        .plant-graphic {
-            font-size: 80px;
-            transition: 0.5s;
+        .nav-item.active { color: var(--text-dark); }
+        .nav-item i { margin-bottom: 4px; }
+
+        /* List Items inside Tabs */
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 10px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            cursor: pointer;
         }
-        
-        /* Settings specific */
-        .slider-group { margin-bottom: 15px; }
-        .slider-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px;}
-        input[type="color"] { padding: 0; height: 40px; border: none; border-radius: 8px; cursor: pointer; }
+        .list-item:last-child { border-bottom: none; }
 
-        /* History logs */
-        .log-item { border-bottom: 1px solid var(--border); padding: 10px 0; }
-        .log-item:last-child { border-bottom: none; }
-        .log-date { font-size: 12px; opacity: 0.6; }
+        /* Forms */
+        input[type="text"], textarea {
+            width: 100%;
+            background: rgba(255,255,255,0.5);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 12px;
+            padding: 12px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            outline: none;
+        }
+        input:focus, textarea:focus { background: rgba(255,255,255,0.8); }
 
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid white;
+            font-family: 'Comfortaa', cursive;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
     </style>
 </head>
 <body>
 
-    <div class="app-container" id="app">
+    <!-- The Dreamy Background -->
+    <div id="mesh-background"></div>
+
+    <div id="app-container">
         
         <!-- ================= MOOD TAB ================= -->
-        <div class="page active" id="page-mood">
-            <div class="sub-nav">
-                <div class="active" onclick="switchSubTab('mood', 'log')">Log</div>
-                <div onclick="switchSubTab('mood', 'stats')">Stats</div>
-            </div>
+        <div id="tab-mood" class="page active">
+            <h1 class="header-title">Your Days Better</h1>
+            <p style="margin-bottom: 20px; color: var(--text-light);">How are you feeling right now?</p>
             
-            <div id="mood-log-view">
-                <div class="card">
-                    <h2 id="greeting">Good morning, Friend</h2>
-                    <p>How are you feeling today?</p>
-                    
-                    <div class="mood-row">
-                        <button class="mood-btn" onclick="selectMood('Rough', '😢')">😢</button>
-                        <button class="mood-btn" onclick="selectMood('Low', '🙁')">🙁</button>
-                        <button class="mood-btn" onclick="selectMood('Okay', '😐')">😐</button>
-                        <button class="mood-btn" onclick="selectMood('Good', '🙂')">🙂</button>
-                        <button class="mood-btn" onclick="selectMood('Great', '😄')">😄</button>
-                    </div>
-                    
-                    <input type="text" id="mood-note" placeholder="Add a short note (optional)">
-                    <button class="primary" style="width:100%" onclick="saveMood()">Log Mood</button>
-                </div>
-
-                <h3>Recent Moods</h3>
-                <div class="card" id="mood-history"></div>
+            <div id="mood-list-container">
+                <!-- Mood logs will appear here -->
             </div>
+        </div>
 
-            <div id="mood-stats-view" style="display:none;">
-                <div class="card">
-                    <h2>Mood Stats</h2>
-                    <p>Keep logging to see your patterns! (Visuals coming soon)</p>
-                </div>
+        <!-- ================= MOOD - LOG PAGE (Hidden by default) ================= -->
+        <div id="page-log-mood" class="page">
+            <div class="back-btn" onclick="navigate('tab-mood')">
+                <i data-lucide="chevron-left"></i> Back to Mood
             </div>
+            <h2 style="margin-bottom: 20px;">Log Your Mood</h2>
+            
+            <div class="glass-card" style="text-align: center;">
+                <!-- Example of icons instead of emojis -->
+                <div style="display: flex; justify-content: space-around; margin-bottom: 20px; font-size: 1.5rem;">
+                    <i data-lucide="cloud-rain"></i>
+                    <i data-lucide="cloud"></i>
+                    <i data-lucide="cloud-sun"></i>
+                    <i data-lucide="sun"></i>
+                </div>
+                <input type="text" id="mood-note" placeholder="Add a short note...">
+            </div>
+            <button class="btn-primary" onclick="saveMood()">Save Mood</button>
         </div>
 
         <!-- ================= FEELINGS TAB ================= -->
-        <div class="page" id="page-feelings">
-            <div class="sub-nav">
-                <div class="active" onclick="switchSubTab('feelings', 'log')">Log</div>
-                <div onclick="switchSubTab('feelings', 'stats')">Balance</div>
+        <div id="tab-feelings" class="page">
+            <h1 class="header-title">Feelings</h1>
+            <p style="margin-bottom: 20px; color: var(--text-light);">Your emotional balance.</p>
+
+            <div class="glass-card">
+                <h3 style="margin-bottom: 10px;">Pleasant</h3>
+                <div id="pleasant-feelings"></div>
             </div>
-
-            <div id="feelings-log-view">
-                <div class="card">
-                    <h2>What are you feeling?</h2>
-                    <p>Pick as many as fit.</p>
-                    
-                    <h4 style="margin: 10px 0;">Pleasant</h4>
-                    <div class="tags" id="pleasant-tags">
-                        <div class="tag pleasant" onclick="toggleTag(this, 'pleasant')">cheerful</div>
-                        <div class="tag pleasant" onclick="toggleTag(this, 'pleasant')">happy</div>
-                        <div class="tag pleasant" onclick="toggleTag(this, 'pleasant')">hopeful</div>
-                        <div class="tag pleasant" onclick="toggleTag(this, 'pleasant')">calm</div>
-                        <div class="tag pleasant" onclick="toggleTag(this, 'pleasant')">grateful</div>
-                        <div class="tag pleasant" onclick="toggleTag(this, 'pleasant')">loved</div>
-                    </div>
-
-                    <h4 style="margin: 10px 0;">Difficult</h4>
-                    <div class="tags" id="difficult-tags">
-                        <div class="tag difficult" onclick="toggleTag(this, 'difficult')">sad</div>
-                        <div class="tag difficult" onclick="toggleTag(this, 'difficult')">angry</div>
-                        <div class="tag difficult" onclick="toggleTag(this, 'difficult')">anxious</div>
-                        <div class="tag difficult" onclick="toggleTag(this, 'difficult')">tired</div>
-                        <div class="tag difficult" onclick="toggleTag(this, 'difficult')">stressed</div>
-                    </div>
-
-                    <input type="text" id="feeling-note" placeholder="What is behind it? (optional)">
-                    <button class="primary" style="width:100%" onclick="saveFeelings()">Log Feelings</button>
-                </div>
+            
+            <div class="glass-card">
+                <h3 style="margin-bottom: 10px;">Difficult</h3>
+                <div id="difficult-feelings"></div>
             </div>
+        </div>
 
-            <div id="feelings-stats-view" style="display:none;">
-                <div class="card">
-                    <h2>Emotional Balance</h2>
-                    <p id="balance-text">No logs yet.</p>
-                    <div style="height: 20px; background: #e0e0e0; border-radius: 10px; overflow: hidden; display: flex;">
-                        <div id="bar-pleasant" style="width: 0%; background: #a3d9a5; transition: width 0.5s;"></div>
-                        <div id="bar-difficult" style="width: 0%; background: #f4a6a6; transition: width 0.5s;"></div>
-                    </div>
-                </div>
+        <!-- ================= FEELINGS - ADD PAGE ================= -->
+        <div id="page-add-feeling" class="page">
+            <div class="back-btn" onclick="navigate('tab-feelings')">
+                <i data-lucide="chevron-left"></i> Back to Feelings
             </div>
+            <h2 style="margin-bottom: 20px;">Add a Feeling</h2>
+            
+            <div class="glass-card">
+                <input type="text" id="new-feeling-name" placeholder="Name of feeling (e.g., Nostalgic)">
+                <select id="new-feeling-type" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.8); background: rgba(255,255,255,0.5); margin-bottom: 15px; font-family: 'Quicksand';">
+                    <option value="pleasant">Pleasant</option>
+                    <option value="difficult">Difficult</option>
+                </select>
+            </div>
+            <button class="btn-primary" onclick="addFeeling()">Save Feeling</button>
         </div>
 
         <!-- ================= JOURNAL TAB ================= -->
-        <div class="page" id="page-journal">
-            <div class="card" style="flex: 1; display: flex; flex-direction: column;">
-                <div style="display: flex; justify-content: space-between;">
-                    <h2>Write it out</h2>
-                    <button onclick="randomPrompt()" style="padding: 5px 10px; font-size: 12px;">Prompt 🔄</button>
-                </div>
-                <p id="journal-prompt" style="font-style: italic; opacity: 0.8; margin-bottom: 10px;">"How do you want today to feel?"</p>
-                
-                <input type="text" id="journal-title" placeholder="Title (optional)">
-                
-                <!-- Rich Text Toolbar -->
-                <div class="journal-tools">
-                    <button onclick="formatText('bold')" style="padding: 5px 10px; font-weight: bold;">B</button>
-                    <button onclick="formatText('italic')" style="padding: 5px 10px; font-style: italic;">I</button>
-                    <div class="color-dot" style="background: #333;" onclick="formatText('foreColor', '#333')"></div>
-                    <div class="color-dot" style="background: #d49dfc;" onclick="formatText('foreColor', '#d49dfc')"></div>
-                    <div class="color-dot" style="background: #8ec5fc;" onclick="formatText('foreColor', '#8ec5fc')"></div>
-                </div>
-
-                <div id="journal-content" contenteditable="true" style="flex: 1; background: rgba(255,255,255,0.4); border-radius: 12px; padding: 15px; outline: none; overflow-y: auto; min-height: 200px;">
-                    Start writing here...
-                </div>
-                
-                <button class="primary" style="width:100%; margin-top: 15px;" onclick="saveJournal()">Save Entry</button>
-            </div>
-        </div>
-
-        <!-- ================= PLANT PET TAB ================= -->
-        <div class="page" id="page-plant">
-            <div class="card" style="text-align: center;">
-                <h2>Your Little Friend</h2>
-                <p>Log a mood or journal entry every day to help it grow!</p>
-                
-                <div class="plant-container">
-                    <div class="plant-graphic" id="plant-graphic">🌱</div>
-                </div>
-                
-                <h3 id="plant-status">Status: Thirsty</h3>
-                <p style="font-size: 14px; opacity: 0.8;">Streak: <span id="plant-streak">0</span> days</p>
-            </div>
+        <div id="tab-journal" class="page">
+            <h1 class="header-title">Journal</h1>
+            <p style="margin-bottom: 20px; color: var(--text-light);">Private & Secure.</p>
+            <!-- Journal list would go here -->
         </div>
 
         <!-- ================= SETTINGS TAB ================= -->
-        <div class="page" id="page-settings">
-            <div class="card">
-                <h2>Your Name</h2>
-                <input type="text" id="settings-name" placeholder="Enter your name" onchange="saveName()">
-            </div>
-
-            <div class="card">
-                <h2>Dreamy Background</h2>
-                <p style="font-size: 14px;">Adjust your 3-color gradient.</p>
-                <div class="slider-group">
-                    <label>Color 1</label>
-                    <input type="color" id="color1" value="#e0c3fc" oninput="updateGradient()">
+        <div id="tab-settings" class="page">
+            <h1 class="header-title">Settings</h1>
+            
+            <div class="glass-card">
+                <h3 style="margin-bottom: 15px;">Theme</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 10px; color: var(--text-light);">Presets</p>
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <div onclick="setTheme('#e6e6fa', '#ffd1dc', '#b0e0e6')" style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(45deg, #e6e6fa, #ffd1dc, #b0e0e6); border: 2px solid white; cursor: pointer;"></div>
+                    <div onclick="setTheme('#ffebcd', '#f0e68c', '#d3d3d3')" style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(45deg, #ffebcd, #f0e68c, #d3d3d3); border: 2px solid white; cursor: pointer;"></div>
+                    <div onclick="setTheme('#c8e6c9', '#b2dfdb', '#e0f2f1')" style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(45deg, #c8e6c9, #b2dfdb, #e0f2f1); border: 2px solid white; cursor: pointer;"></div>
                 </div>
-                <div class="slider-group">
-                    <label>Color 2</label>
-                    <input type="color" id="color2" value="#8ec5fc" oninput="updateGradient()">
-                </div>
-                <div class="slider-group">
-                    <label>Color 3</label>
-                    <input type="color" id="color3" value="#fbc2eb" oninput="updateGradient()">
-                </div>
-            </div>
 
-            <div class="card">
-                <h2>Appearance</h2>
-                <button style="width: 100%;" onclick="toggleTheme()" id="theme-btn">Toggle Dark Mode</button>
-            </div>
-
-            <div class="card">
-                <h2>Font Style</h2>
-                <select id="font-select" onchange="changeFont()">
-                    <option value="'Quicksand', sans-serif">Clean (Quicksand)</option>
-                    <option value="'Comfortaa', cursive">Soft (Comfortaa)</option>
-                    <option value="'Great Vibes', cursive">Elegant (Great Vibes)</option>
-                </select>
-            </div>
-
-            <div class="card">
-                <h2>Data</h2>
-                <p style="font-size: 14px;">Everything is saved privately on your device.</p>
-                <button style="width: 100%; margin-bottom: 10px;" onclick="exportData()">Export Backup (.json)</button>
-                <button style="width: 100%; background: #ffcccc;" onclick="clearData()">Clear All Data</button>
+                <p style="font-size: 0.9rem; margin-bottom: 10px; color: var(--text-light);">Custom Sliders (Helichrome)</p>
+                <input type="range" id="hue-1" min="0" max="360" value="270" oninput="applyCustomTheme()" style="width:100%; margin-bottom: 10px;">
+                <input type="range" id="hue-2" min="0" max="360" value="350" oninput="applyCustomTheme()" style="width:100%; margin-bottom: 10px;">
+                <input type="range" id="hue-3" min="0" max="360" value="200" oninput="applyCustomTheme()" style="width:100%;">
             </div>
         </div>
 
+    </div>
+
+    <!-- Floating Action Button (Changes based on active tab) -->
+    <div class="fab" id="main-fab" onclick="handleFabClick()">
+        <i data-lucide="plus" style="width: 28px; height: 28px;"></i>
     </div>
 
     <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('mood')">
-            <span class="icon">😊</span>Mood
+    <div id="bottom-nav">
+        <div class="nav-item active" onclick="navigate('tab-mood')" id="nav-mood">
+            <i data-lucide="sun"></i>
+            <span>Mood</span>
         </div>
-        <div class="nav-item" onclick="switchTab('feelings')">
-            <span class="icon">💜</span>Feelings
+        <div class="nav-item" onclick="navigate('tab-feelings')" id="nav-feelings">
+            <i data-lucide="heart"></i>
+            <span>Feelings</span>
         </div>
-        <div class="nav-item" onclick="switchTab('journal')">
-            <span class="icon">📖</span>Journal
+        <div class="nav-item" onclick="navigate('tab-journal')" id="nav-journal">
+            <i data-lucide="book-open"></i>
+            <span>Journal</span>
         </div>
-        <div class="nav-item" onclick="switchTab('plant')">
-            <span class="icon">🪴</span>Plant
-        </div>
-        <div class="nav-item" onclick="switchTab('settings')">
-            <span class="icon">⚙️</span>Settings
+        <div class="nav-item" onclick="navigate('tab-settings')" id="nav-settings">
+            <i data-lucide="settings"></i>
+            <span>Settings</span>
         </div>
     </div>
 
-    <!-- Floating Add Button (Only shows on Journal/Feelings) -->
-    <button class="fab" id="fab-btn" style="display: none;" onclick="fabAction()">+</button>
-
     <script>
-        // --- App State & Local Storage ---
-        let appData = JSON.parse(localStorage.getItem('yourDaysBetterData')) || {
-            name: "",
-            theme: "light",
-            font: "'Quicksand', sans-serif",
-            colors: ["#e0c3fc", "#8ec5fc", "#fbc2eb"],
-            moods: [],
-            feelings: [],
-            journals: [],
-            plantStreak: 0,
-            lastLogDate: null
-        };
+        // Initialize Icons
+        lucide.createIcons();
 
-        let currentMoodSelection = null;
+        // Basic Navigation Logic
+        let currentTab = 'tab-mood';
 
-        // --- Initialization ---
-        function init() {
-            // Set Name
-            if(appData.name) {
-                document.getElementById('greeting').innerText = `Good morning, ${appData.name}`;
-            }
-            document.getElementById('settings-name').value = appData.name;
-
-            // Set Colors
-            document.getElementById('color1').value = appData.colors[0];
-            document.getElementById('color2').value = appData.colors[1];
-            document.getElementById('color3').value = appData.colors[2];
-            updateGradient();
-
-            // Set Theme
-            document.documentElement.setAttribute('data-theme', appData.theme);
-            if(appData.theme === 'dark') document.getElementById('theme-btn').innerText = "Toggle Light Mode";
-
-            // Set Font
-            document.documentElement.style.setProperty('--font', appData.font);
-            document.getElementById('font-select').value = appData.font;
-
-            // Load Data
-            renderMoodHistory();
-            updateBalanceStats();
-            updatePlant();
+        function navigate(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            // Show target page
+            document.getElementById(pageId).classList.add('active');
             
-            // Set Greeting based on time
-            const hour = new Date().getHours();
-            let greet = "Good morning";
-            if(hour > 12) greet = "Good afternoon";
-            if(hour > 18) greet = "Good evening";
-            const nameStr = appData.name ? `, ${appData.name}` : ", Friend";
-            document.getElementById('greeting').innerText = `${greet}${nameStr}`;
-        }
-
-        function saveData() {
-            localStorage.setItem('yourDaysBetterData', JSON.stringify(appData));
-        }
-
-        // --- Navigation ---
-        function switchTab(tabId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
-            document.getElementById(`page-${tabId}`).classList.add('active');
-            event.currentTarget.classList.add('active');
-
-            // Show/Hide FAB
-            const fab = document.getElementById('fab-btn');
-            if(tabId === 'journal' || tabId === 'feelings') {
-                fab.style.display = 'flex';
+            // Update Bottom Nav (Only if it's a main tab)
+            if(pageId.startsWith('tab-')) {
+                currentTab = pageId;
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                document.getElementById('nav-' + pageId.split('-')[1]).classList.add('active');
+                // Show FAB for main tabs
+                document.getElementById('main-fab').style.display = 'flex';
             } else {
-                fab.style.display = 'none';
+                // Hide FAB on sub-pages
+                document.getElementById('main-fab').style.display = 'none';
             }
         }
 
-        function switchSubTab(parent, sub) {
-            event.currentTarget.parentElement.querySelectorAll('div').forEach(d => d.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-
-            if(parent === 'mood') {
-                document.getElementById('mood-log-view').style.display = sub === 'log' ? 'block' : 'none';
-                document.getElementById('mood-stats-view').style.display = sub === 'stats' ? 'block' : 'none';
-            } else if(parent === 'feelings') {
-                document.getElementById('feelings-log-view').style.display = sub === 'log' ? 'block' : 'none';
-                document.getElementById('feelings-stats-view').style.display = sub === 'stats' ? 'block' : 'none';
+        function handleFabClick() {
+            if (currentTab === 'tab-mood') {
+                navigate('page-log-mood');
+            } else if (currentTab === 'tab-feelings') {
+                navigate('page-add-feeling');
             }
         }
 
-        function fabAction() {
-            // Simple focus logic for the FAB
-            const activePage = document.querySelector('.page.active');
-            if(activePage.id === 'page-journal') {
-                document.getElementById('journal-content').focus();
-            } else if(activePage.id === 'page-feelings') {
-                document.getElementById('feeling-note').focus();
-            }
+        // Settings / Theme Logic
+        function setTheme(c1, c2, c3) {
+            document.documentElement.style.setProperty('--color-1', c1);
+            document.documentElement.style.setProperty('--color-2', c2);
+            document.documentElement.style.setProperty('--color-3', c3);
         }
 
-        // --- Mood Logic ---
-        function selectMood(mood, emoji) {
-            document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
-            currentMoodSelection = { mood, emoji };
-        }
-
-        function saveMood() {
-            if(!currentMoodSelection) return alert("Please select a mood face!");
+        function applyCustomTheme() {
+            const h1 = document.getElementById('hue-1').value;
+            const h2 = document.getElementById('hue-2').value;
+            const h3 = document.getElementById('hue-3').value;
             
-            const note = document.getElementById('mood-note').value;
-            const date = new Date().toLocaleString();
-            
-            appData.moods.unshift({ date, mood: currentMoodSelection.mood, emoji: currentMoodSelection.emoji, note });
-            saveData();
-            
-            document.getElementById('mood-note').value = '';
-            document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-            currentMoodSelection = null;
-            
-            renderMoodHistory();
-            checkStreak();
-            alert("Mood logged!");
+            // Use HSL to create beautiful pastel gradients based on hue sliders
+            setTheme(`hsl(${h1}, 70%, 85%)`, `hsl(${h2}, 70%, 85%)`, `hsl(${h3}, 70%, 85%)`);
         }
-
-        function renderMoodHistory() {
-            const container = document.getElementById('mood-history');
-            container.innerHTML = appData.moods.slice(0, 5).map(m => `
-                <div class="log-item">
-                    <div style="font-size: 20px;">${m.emoji} <b style="font-size:16px;">${m.mood}</b></div>
-                    <div class="log-date">${m.date}</div>
-                    ${m.note ? `<p style="font-size: 14px; margin-top:5px;">${m.note}</p>` : ''}
-                </div>
-            `).join('') || '<p style="font-size:14px; opacity:0.6;">No recent moods.</p>';
-        }
-
-        // --- Feelings Logic ---
-        function toggleTag(el, type) {
-            el.classList.toggle('selected');
-        }
-
-        function saveFeelings() {
-            const selectedTags = Array.from(document.querySelectorAll('.tag.selected')).map(t => ({
-                name: t.innerText,
-                type: t.classList.contains('pleasant') ? 'pleasant' : 'difficult'
-            }));
-            
-            if(selectedTags.length === 0) return alert("Select at least one feeling.");
-            
-            const note = document.getElementById('feeling-note').value;
-            const date = new Date().toLocaleString();
-            
-            appData.feelings.unshift({ date, tags: selectedTags, note });
-            saveData();
-            
-            document.querySelectorAll('.tag').forEach(t => t.classList.remove('selected'));
-            document.getElementById('feeling-note').value = '';
-            
-            updateBalanceStats();
-            checkStreak();
-            alert("Feelings logged!");
-        }
-
-        function updateBalanceStats() {
-            let pleasantCount = 0;
-            let difficultCount = 0;
-            
-            appData.feelings.forEach(log => {
-                log.tags.forEach(tag => {
-                    if(tag.type === 'pleasant') pleasantCount++;
-                    if(tag.type === 'difficult') difficultCount++;
-                });
-            });
-
-            const total = pleasantCount + difficultCount;
-            if(total === 0) {
-                document.getElementById('balance-text').innerText = "No logs yet.";
-                return;
-            }
-
-            const pleasantPct = Math.round((pleasantCount / total) * 100);
-            const difficultPct = 100 - pleasantPct;
-
-            document.getElementById('balance-text').innerText = `Pleasant ${pleasantPct}% · Difficult ${difficultPct}%`;
-            document.getElementById('bar-pleasant').style.width = `${pleasantPct}%`;
-            document.getElementById('bar-difficult').style.width = `${difficultPct}%`;
-        }
-
-        // --- Journal Logic ---
-        const prompts = [
-            "How do you want today to feel?",
-            "What is one thing you are grateful for right now?",
-            "Where do you feel stress in your body, and how can you release it?",
-            "Describe a small win you had recently.",
-            "What is something you need to forgive yourself for?"
-        ];
-
-        function randomPrompt() {
-            const p = prompts[Math.floor(Math.random() * prompts.length)];
-            document.getElementById('journal-prompt').innerText = `"${p}"`;
-        }
-
-        function formatText(command, value = null) {
-            document.execCommand(command, false, value);
-            document.getElementById('journal-content').focus();
-        }
-
-        function saveJournal() {
-            const title = document.getElementById('journal-title').value;
-            const content = document.getElementById('journal-content').innerHTML;
-            const date = new Date().toLocaleString();
-
-            if(content.trim() === '' || content === 'Start writing here...') {
-                return alert("Write something first!");
-            }
-
-            appData.journals.unshift({ date, title, content });
-            saveData();
-
-            document.getElementById('journal-title').value = '';
-            document.getElementById('journal-content').innerHTML = '';
-            checkStreak();
-            alert("Journal saved!");
-        }
-
-        // --- Plant Logic ---
-        function checkStreak() {
-            const today = new Date().toDateString();
-            
-            if(appData.lastLogDate !== today) {
-                // If logged yesterday, increase streak. Otherwise reset to 1.
-                const yesterday = new Date();
-                yesterday.setDate(yesterday.getDate() - 1);
-                
-                if(appData.lastLogDate === yesterday.toDateString()) {
-                    appData.plantStreak++;
-                } else {
-                    appData.plantStreak = 1;
-                }
-                
-                appData.lastLogDate = today;
-                saveData();
-                updatePlant();
-            }
-        }
-
-        function updatePlant() {
-            const plant = document.getElementById('plant-graphic');
-            const status = document.getElementById('plant-status');
-            document.getElementById('plant-streak').innerText = appData.plantStreak;
-
-            if(appData.plantStreak === 0) {
-                plant.innerText = "🌱";
-                status.innerText = "Status: Needs water (log something!)";
-            } else if(appData.plantStreak < 3) {
-                plant.innerText = "🌿";
-                status.innerText = "Status: Growing nicely";
-            } else if(appData.plantStreak < 7) {
-                plant.innerText = "🪴";
-                status.innerText = "Status: Thriving!";
-            } else {
-                plant.innerText = "🌸"; // Flower
-                status.innerText = "Status: Blooming beautifully!";
-            }
-        }
-
-        // --- Settings Logic ---
-        function saveName() {
-            appData.name = document.getElementById('settings-name').value;
-            saveData();
-            init(); // Refresh greeting
-        }
-
-        function updateGradient() {
-            const c1 = document.getElementById('color1').value;
-            const c2 = document.getElementById('color2').value;
-            const c3 = document.getElementById('color3').value;
-            
-            document.documentElement.style.setProperty('--c1', c1);
-            document.documentElement.style.setProperty('--c2', c2);
-            document.documentElement.style.setProperty('--c3', c3);
-
-            appData.colors = [c1, c2, c3];
-            saveData();
-        }
-
-        function toggleTheme() {
-            const current = document.documentElement.getAttribute('data-theme');
-            const newTheme = current === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            document.getElementById('theme-btn').innerText = `Toggle ${newTheme === 'dark' ? 'Light' : 'Dark'} Mode`;
-            
-            appData.theme = newTheme;
-            saveData();
-        }
-
-        function changeFont() {
-            const font = document.getElementById('font-select').value;
-            document.documentElement.style.setProperty('--font', font);
-            appData.font = font;
-            saveData();
-        }
-
-        function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href",     dataStr);
-            downloadAnchorNode.setAttribute("download", "your_days_better_backup.json");
-            document.body.appendChild(downloadAnchorNode); // required for firefox
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
-        }
-
-        function clearData() {
-            if(confirm("Are you sure? This will delete ALL your logs, journals, and settings permanently.")) {
-                localStorage.removeItem('yourDaysBetterData');
-                location.reload();
-            }
-        }
-
-        // Run init on load
-        window.onload = init;
 
     </script>
 </body>
 </html>
+<script>
+    lucide.createIcons();
+    let currentTab = 'tab-mood';
+    let appData = JSON.parse(localStorage.getItem('ydb_data')) || { moods: [], feelings: [] };
+
+    function saveData() { localStorage.setItem('ydb_data', JSON.stringify(appData)); }
+
+    function navigate(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        if(pageId.startsWith('tab-')) {
+            currentTab = pageId;
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('nav-' + pageId.split('-')[1]).classList.add('active');
+            document.getElementById('main-fab').style.display = 'flex';
+        } else {
+            document.getElementById('main-fab').style.display = 'none';
+        }
+        renderData();
+    }
+
+    function handleFabClick() {
+        if (currentTab === 'tab-mood') navigate('page-log-mood');
+        else if (currentTab === 'tab-feelings') navigate('page-add-feeling');
+    }
+
+    function setTheme(c1, c2, c3) {
+        document.documentElement.style.setProperty('--color-1', c1);
+        document.documentElement.style.setProperty('--color-2', c2);
+        document.documentElement.style.setProperty('--color-3', c3);
+    }
+
+    function applyCustomTheme() {
+        const h1 = document.getElementById('hue-1').value;
+        const h2 = document.getElementById('hue-2').value;
+        const h3 = document.getElementById('hue-3').value;
+        setTheme(`hsl(${h1}, 70%, 85%)`, `hsl(${h2}, 70%, 85%)`, `hsl(${h3}, 70%, 85%)`);
+    }
+
+    // Save Mood Logic
+    function saveMood() {
+        const note = document.getElementById('mood-note').value;
+        if(!note) return;
+        appData.moods.unshift({ id: Date.now(), note: note });
+        saveData();
+        document.getElementById('mood-note').value = '';
+        navigate('tab-mood');
+    }
+
+    // Add Feeling Logic
+    function addFeeling() {
+        const name = document.getElementById('new-feeling-name').value;
+        const type = document.getElementById('new-feeling-type').value;
+        if(!name) return;
+        appData.feelings.push({ name, type });
+        saveData();
+        document.getElementById('new-feeling-name').value = '';
+        navigate('tab-feelings');
+    }
+
+    // Render Lists
+    function renderData() {
+        // Render Moods
+        const moodContainer = document.getElementById('mood-list-container');
+        moodContainer.innerHTML = appData.moods.map(m => `
+            <div class="glass-card">
+                <p>${m.note}</p>
+            </div>
+        `).join('');
+
+        // Render Feelings
+        const pleasant = appData.feelings.filter(f => f.type === 'pleasant');
+        const difficult = appData.feelings.filter(f => f.type === 'difficult');
+        
+        document.getElementById('pleasant-feelings').innerHTML = pleasant.map(f => `<div class="list-item">${f.name}</div>`).join('');
+        document.getElementById('difficult-feelings').innerHTML = difficult.map(f => `<div class="list-item">${f.name}</div>`).join('');
+    }
+
+    // Initial Load
+    renderData();
+</script>
