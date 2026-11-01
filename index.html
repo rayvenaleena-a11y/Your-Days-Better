@@ -370,3 +370,668 @@
 </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Days Better</title>
+    <!-- Imported Google Fonts matching your style sheet -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Great+Vibes&family=Pacifico&family=Sacramento&family=Bebas+Neue&family=Quicksand:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #1E002C;
+            --bg-gradient: linear-gradient(135deg, #1E002C 0%, #2A1845 50%, #12001C 100%);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.12);
+            --accent-pink: #FF99DD;
+            --accent-cyan: #B4E7FF;
+            --accent-lavender: #DCC8FF;
+            --text-main: #F2F0FF;
+            --text-muted: #B3A5C9;
+            --current-font: 'Quicksand', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--current-font);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 16px 90px 16px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 10px 0 5px 0;
+        }
+
+        header h1 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Tab Content Sections */
+        .tab-section {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-section.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Surface Cards */
+        .surface-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .quote-box {
+            text-align: center;
+            font-style: italic;
+            color: var(--accent-lavender);
+            font-size: 0.92rem;
+            line-height: 1.4;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        /* Floating Action Button (FAB) */
+        .fab-btn {
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-lavender));
+            color: #1E002C;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 24px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 153, 221, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 10px auto;
+            transition: transform 0.2s;
+        }
+
+        .fab-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Modal Overlays for Logging */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(18, 0, 28, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-card {
+            background: #250B3B;
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-pink);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* Mood Grid inside Modal */
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .mood-option {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 14px;
+            text-align: center;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mood-option.selected {
+            background: rgba(255, 153, 221, 0.15);
+            border-color: var(--accent-pink);
+        }
+
+        /* Feeling Tagger Type Selector */
+        .type-selector {
+            display: flex;
+            gap: 10px;
+        }
+
+        .type-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .type-btn.active-pleasant {
+            background: rgba(180, 231, 255, 0.15);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .type-btn.active-difficult {
+            background: rgba(255, 153, 221, 0.15);
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+            font-weight: 600;
+        }
+
+        /* Journal Rich Toolbar */
+        .journal-toolbar {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            background: rgba(0,0,0,0.2);
+            padding: 8px;
+            border-radius: 10px;
+        }
+
+        .tool-btn {
+            background: rgba(255,255,255,0.08);
+            border: none;
+            color: var(--text-main);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .tool-btn:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            resize: none;
+            outline: none;
+        }
+
+        textarea:focus, input:focus {
+            border-color: var(--accent-lavender);
+        }
+
+        /* Settings Sub-Pages */
+        .settings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .setting-item {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--card-border);
+            padding: 14px 16px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .setting-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .settings-subpanel {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .settings-subpanel.active {
+            display: flex;
+        }
+
+        .back-settings {
+            background: none;
+            border: none;
+            color: var(--accent-cyan);
+            font-size: 0.85rem;
+            cursor: pointer;
+            align-self: flex-start;
+            margin-bottom: 4px;
+        }
+
+        .font-option-btn, .theme-option-btn {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            color: var(--text-main);
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Bottom Tab Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 420px;
+            background: rgba(26, 6, 42, 0.92);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 500;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-item span {
+            font-size: 1.2rem;
+        }
+
+        .nav-item.active {
+            color: var(--accent-pink);
+            font-weight: 600;
+        }
+
+        .entry-list-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--card-border);
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Your Days Better</h1>
+            <p>A peaceful space to align your mind & thoughts.</p>
+        </header>
+
+        <!-- TAB 1: MOOD TRACKER -->
+        <section id="tab-mood" class="tab-section active">
+            <div class="surface-card quote-box" id="dailyQuote">
+                "Loading your daily reflection..."
+            </div>
+
+            <button class="fab-btn" onclick="openModal('moodModal')">+ Log New Mood</button>
+
+            <div class="surface-card">
+                <div class="section-title">Recent Moods</div>
+                <div id="moodHistoryList"><p style="color:var(--text-muted); font-size:0.85rem;">No mood entries yet.</p></div>
+            </div>
+        </section>
+
+        <!-- TAB 2: FEELINGS LOG -->
+        <section id="tab-feelings" class="tab-section">
+            <button class="fab-btn" onclick="openModal('feelingModal')">+ Add Feeling Tag</button>
+
+            <div class="surface-card">
+                <div class="section-title">Your Feelings Breakdown</div>
+                <div id="feelingsTagsList"><p style="color:var(--text-muted); font-size:0.85rem;">No feelings logged yet.</p></div>
+            </div>
+        </section>
+
+        <!-- TAB 3: JOURNALING -->
+        <section id="tab-journal" class="tab-section">
+            <div class="surface-card">
+                <div class="section-title">Today's Reflection Prompt</div>
+                <p id="journalPromptText" style="font-size: 0.95rem; color: var(--accent-lavender); line-height: 1.4;"></p>
+            </div>
+
+            <button class="fab-btn" onclick="openModal('journalModal')">+ Write Journal Entry</button>
+
+            <div class="surface-card">
+                <div class="section-title">Journal Entries</div>
+                <div id="journalEntriesList"><p style="color:var(--text-muted); font-size:0.85rem;">No journal logs yet.</p></div>
+            </div>
+        </section>
+
+        <!-- TAB 4: SETTINGS -->
+        <section id="tab-settings" class="tab-section">
+            <div class="surface-card">
+                <!-- Main Settings Menu -->
+                <div id="settingsMain" class="settings-list">
+                    <div class="section-title">Preferences</div>
+                    <div class="setting-item" onclick="openSettingsSub('fontSub')">
+                        <span>Typography & Fonts</span>
+                        <span style="color:var(--text-muted)">›</span>
+                    </div>
+                    <div class="setting-item" onclick="openSettingsSub('themeSub')">
+                        <span>Gradient & Color Theme</span>
+                        <span style="color:var(--text-muted)">›</span>
+                    </div>
+                    <div class="setting-item" onclick="alert('All your entries are securely saved in your browser storage.')">
+                        <span>Data Storage Info</span>
+                        <span style="color:var(--text-muted)">›</span>
+                    </div>
+                </div>
+
+                <!-- Font Sub-Panel -->
+                <div id="fontSub" class="settings-subpanel">
+                    <button class="back-settings" onclick="closeSettingsSub()">‹ Back to Settings</button>
+                    <div class="section-title">Choose Font Style</div>
+                    <button class="font-option-btn" style="font-family:'Quicksand'" onclick="setAppFont('Quicksand', 'Modern Clean')">Modern Clean (Default)</button>
+                    <button class="font-option-btn" style="font-family:'Great Vibes'; font-size:1.2rem;" onclick="setAppFont('Great Vibes', 'Elegance Script')">Elegance Script (Great Vibes)</button>
+                    <button class="font-option-btn" style="font-family:'Dancing Script'" onclick="setAppFont('Dancing Script', 'Kind-hearted Cursive')">Kind-hearted Cursive</button>
+                    <button class="font-option-btn" style="font-family:'Pacifico'" onclick="setAppFont('Pacifico', 'Fresh Styled')">Fresh Styled (Pacifico)</button>
+                    <button class="font-option-btn" style="font-family:'Bebas Neue'; letter-spacing:1px;" onclick="setAppFont('Bebas Neue', 'Bold Headliner')">Bold Headliner (Bebas)</button>
+                </div>
+
+                <!-- Theme Sub-Panel -->
+                <div id="themeSub" class="settings-subpanel">
+                    <button class="back-settings" onclick="closeSettingsSub()">‹ Back to Settings</button>
+                    <div class="section-title">Choose Color Theme</div>
+                    <button class="theme-option-btn" onclick="setAppTheme('linear-gradient(135deg, #1E002C 0%, #2A1845 50%, #12001C 100%)', '#1E002C')">Twilight Purple (Default)</button>
+                    <button class="theme-option-btn" onclick="setAppTheme('linear-gradient(135deg, #0A192F 0%, #172A45 50%, #020C1B 100%)', '#0A192F')">Midnight Blue</button>
+                    <button class="theme-option-btn" onclick="setAppTheme('linear-gradient(135deg, #2D1537 0%, #4A2855 50%, #1F0D27 100%)', '#2D1537')">Soft Mauve Dusk</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- BOTTOM TAB NAVIGATION -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="switchTab('mood', this)"><span>🌙</span>Mood</button>
+        <button class="nav-item" onclick="switchTab('feelings', this)"><span>🌿</span>Feelings</button>
+        <button class="nav-item" onclick="switchTab('journal', this)"><span>✍️</span>Journal</button>
+        <button class="nav-item" onclick="switchTab('settings', this)"><span>⚙️</span>Settings</button>
+    </nav>
+
+    <!-- MODAL: LOG MOOD -->
+    <div id="moodModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header"><span>How are you feeling?</span><button class="close-modal" onclick="closeModal('moodModal')">×</button></div>
+            <div class="mood-grid">
+                <div class="mood-option" onclick="selectMood(this, '✨ Happy')">✨ Happy</div>
+                <div class="mood-option" onclick="selectMood(this, '🌿 Calm')">🌿 Calm</div>
+                <div class="mood-option" onclick="selectMood(this, '🌙 Tired')">🌙 Tired</div>
+                <div class="mood-option" onclick="selectMood(this, '🌧️ Anxious')">🌧️ Anxious</div>
+            </div>
+            <textarea id="moodNote" placeholder="Add a short note about your mood... (optional)" rows="2"></textarea>
+            <button class="fab-btn" style="width:100%; margin:0;" onclick="saveMoodEntry()">Save Mood</button>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD FEELING -->
+    <div id="feelingModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header"><span>Add Feeling Tag</span><button class="close-modal" onclick="closeModal('feelingModal')">×</button></div>
+            <input type="text" id="feelingInput" placeholder="e.g. Inspired, Restless, Grateful...">
+            <div class="type-selector">
+                <button type="button" class="type-btn active-pleasant" id="btnPleasant" onclick="setFeelingType('pleasant')">Pleasant</button>
+                <button type="button" class="type-btn" id="btnDifficult" onclick="setFeelingType('difficult')">Difficult</button>
+            </div>
+            <button class="fab-btn" style="width:100%; margin:0;" onclick="saveFeelingTag()">Save Feeling</button>
+        </div>
+    </div>
+
+    <!-- MODAL: WRITE JOURNAL -->
+    <div id="journalModal" class="modal-overlay">
+        <div class="modal-card" style="max-width: 400px;">
+            <div class="modal-header"><span>Journal Reflection</span><button class="close-modal" onclick="closeModal('journalModal')">×</button></div>
+            <div class="journal-toolbar">
+                <button class="tool-btn" onclick="formatText('bold')"><b>B</b></button>
+                <button class="tool-btn" onclick="formatText('italic')"><i>I</i></button>
+                <button class="tool-btn" onclick="formatText('underline')"><u>U</u></button>
+                <button class="tool-btn" onclick="changeTextColor('#FF99DD')">Pink</button>
+                <button class="tool-btn" onclick="changeTextColor('#B4E7FF')">Cyan</button>
+                <button class="tool-btn" onclick="changeTextColor('#DCC8FF')">Lavender</button>
+            </div>
+            <textarea id="journalText" placeholder="Write your thoughts here..." rows="6" style="font-size:1rem;"></textarea>
+            <button class="fab-btn" style="width:100%; margin:0;" onclick="saveJournalEntry()">Save Entry</button>
+        </div>
+    </div>
+
+    <script>
+        /* Rotating Quotes & Prompts */
+        const quotes = [
+            "\"Peace is the result of retraining your mind to process life as it is, rather than as you think it should be.\"",
+            "\"Your mind is a sacred garden. Water what brings you joy and lets go of what does not serve you.\"",
+            "\"Small steps in the right direction can turn out to be the biggest step of your life.\"",
+            "\"Allow yourself to rest. The world can wait for your brilliance tomorrow.\""
+        ];
+        document.getElementById('dailyQuote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+
+        const prompts = [
+            "What is one quiet moment today that made you feel at ease?",
+            "What is a heavy thought you are ready to gently put down?",
+            "What is something small you did today that you are proud of?",
+            "If your mind had a weather forecast right now, what would it look like?"
+        ];
+        document.getElementById('journalPromptText').innerText = prompts[Math.floor(Math.random() * prompts.length)];
+
+        /* Tab Navigation Logic */
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        /* Modal Handlers */
+        function openModal(modalId) { document.getElementById(modalId).classList.add('open'); }
+        function closeModal(modalId) { document.getElementById(modalId).classList.remove('open'); }
+
+        /* Mood Selection State */
+        let selectedMoodValue = "✨ Happy";
+        function selectMood(el, mood) {
+            document.querySelectorAll('.mood-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedMoodValue = mood;
+        }
+
+        /* Feeling Type State */
+        let feelingTypeState = 'pleasant';
+        function setFeelingType(type) {
+            feelingTypeState = type;
+            if(type === 'pleasant') {
+                document.getElementById('btnPleasant').className = 'type-btn active-pleasant';
+                document.getElementById('btnDifficult').className = 'type-btn';
+            } else {
+                document.getElementById('btnDifficult').className = 'type-btn active-difficult';
+                document.getElementById('btnPleasant').className = 'type-btn';
+            }
+        }
+
+        /* Settings Subpanels */
+        function openSettingsSub(subId) {
+            document.getElementById('settingsMain').style.display = 'none';
+            document.getElementById(subId).classList.add('active');
+        }
+        function closeSettingsSub() {
+            document.querySelectorAll('.settings-subpanel').forEach(p => p.classList.remove('active'));
+            document.getElementById('settingsMain').style.display = 'flex';
+        }
+
+        function setAppFont(fontFamily, name) {
+            document.documentElement.style.setProperty('--current-font', fontFamily);
+            alert("Font changed to " + name + "!");
+        }
+
+        function setAppTheme(gradient, deepBg) {
+            document.documentElement.style.setProperty('--bg-gradient', gradient);
+            document.documentElement.style.setProperty('--bg-deep', deepBg);
+            alert("Theme updated successfully!");
+        }
+
+        /* Saving Entries (Local Storage Powered) */
+        let moods = JSON.parse(localStorage.getItem('yb_moods') || '[]');
+        let feelings = JSON.parse(localStorage.getItem('yb_feelings') || '[]');
+        let journals = JSON.parse(localStorage.getItem('yb_journals') || '[]');
+
+        renderAll();
+
+        function saveMoodEntry() {
+            const note = document.getElementById('moodNote').value;
+            moods.unshift({ mood: selectedMoodValue, note, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
+            localStorage.setItem('yb_moods', JSON.stringify(moods));
+            document.getElementById('moodNote').value = '';
+            closeModal('moodModal');
+            renderMoods();
+        }
+
+        function saveFeelingTag() {
+            const val = document.getElementById('feelingInput').value.trim();
+            if(!val) return;
+            feelings.unshift({ tag: val, type: feelingTypeState });
+            localStorage.setItem('yb_feelings', JSON.stringify(feelings));
+            document.getElementById('feelingInput').value = '';
+            closeModal('feelingModal');
+            renderFeelings();
+        }
+
+        function saveJournalEntry() {
+            const text = document.getElementById('journalText').value;
+            if(!text.trim()) return;
+            journals.unshift({ text, time: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
+            localStorage.setItem('yb_journals', JSON.stringify(journals));
+            document.getElementById('journalText').value = '';
+            closeModal('journalModal');
+            renderJournals();
+        }
+
+        function renderMoods() {
+            const list = document.getElementById('moodHistoryList');
+            if(moods.length === 0) { list.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No mood entries yet.</p>'; return; }
+            list.innerHTML = moods.map(m => `<div class="entry-list-item"><strong>${m.mood}</strong> <span style="font-size:0.75rem; color:var(--text-muted); float:right;">${m.time}</span>${m.note ? '<br><span style="color:var(--text-muted); font-size:0.85rem;">'+m.note+'</span>' : ''}</div>`).join('');
+        }
+
+        function renderFeelings() {
+            const list = document.getElementById('feelingsTagsList');
+            if(feelings.length === 0) { list.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No feelings logged yet.</p>'; return; }
+            list.innerHTML = feelings.map(f => `<div class="entry-list-item" style="border-left: 3px solid ${f.type === 'pleasant' ? 'var(--accent-cyan)' : 'var(--accent-pink)'}"><span>${f.tag}</span> <span style="font-size:0.75rem; color:var(--text-muted); float:right; text-transform:uppercase;">${f.type}</span></div>`).join('');
+        }
+
+        function renderJournals() {
+            const list = document.getElementById('journalEntriesList');
+            if(journals.length === 0) { list.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No journal logs yet.</p>'; return; }
+            list.innerHTML = journals.map(j => `<div class="entry-list-item"><div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:4px;">${j.time}</div><div>${j.text}</div></div>`).join('');
+        }
+
+        function renderAll() { renderMoods(); renderFeelings(); renderJournals(); }
+
+        /* Formatting helper for Journal */
+        function formatText(command) {
+            document.execCommand(command, false, null);
+        }
+        function changeTextColor(color) {
+            document.execCommand('styleWithCSS', false, true);
+            document.execCommand('foreColor', false, color);
+        }
+    </script>
+</body>
+</html>
