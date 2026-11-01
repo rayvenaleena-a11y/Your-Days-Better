@@ -4,392 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Days Better</title>
+    <!-- Expanded Font Library -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Great+Vibes&family=Dancing+Script:wght@600&family=Pacifico&family=Sacramento&family=Parisienne&family=Playfair+Display:ital,wght@0,500;1,400&family=Comfortaa:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #1E002C;
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --card-border: rgba(255, 255, 255, 0.15);
-            --accent-pink: #FF99DD;
-            --accent-cyan: #B4E7FF;
-            --accent-lavender: #DCC8FF;
-            --text-main: #F2F0FF;
-            --text-muted: #B3A5C9;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #1E002C 0%, #2A0845 50%, #12001C 100%);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 20px 15px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        header {
-            text-align: center;
-            padding: 10px 0;
-        }
-
-        header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 6px;
-        }
-
-        header p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        .section-title {
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--accent-lavender);
-            margin-bottom: 12px;
-        }
-
-        /* Mood Selector Grid */
-        .mood-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-
-        .mood-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            padding: 12px 6px;
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .mood-btn span.emoji { font-size: 1.5rem; }
-        .mood-btn span.label { font-size: 0.75rem; }
-
-        .mood-btn.selected {
-            background: linear-gradient(135deg, rgba(255, 153, 221, 0.3), rgba(180, 231, 255, 0.3));
-            border-color: var(--accent-pink);
-            transform: scale(1.03);
-        }
-
-        /* Tags Input */
-        .tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .tag-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 6px 14px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .tag-btn.selected {
-            background: var(--accent-cyan);
-            color: #12001C;
-            border-color: var(--accent-cyan);
-            font-weight: 600;
-        }
-
-        /* Journal Text Area */
-        textarea {
-            width: 100%;
-            height: 100px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 12px;
-            color: var(--text-main);
-            font-size: 0.9rem;
-            resize: none;
-            outline: none;
-        }
-
-        textarea:focus {
-            border-color: var(--accent-lavender);
-        }
-
-        /* Submit Button */
-        .submit-btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 16px;
-            background: linear-gradient(90deg, var(--accent-pink), var(--accent-lavender));
-            color: #12001C;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 153, 221, 0.4);
-            transition: opacity 0.2s ease;
-        }
-
-        .submit-btn:hover { opacity: 0.9; }
-
-        /* Insight Box */
-        .insight-box {
-            background: linear-gradient(135deg, rgba(220, 200, 255, 0.15), rgba(180, 231, 255, 0.1));
-            border-left: 3px solid var(--accent-pink);
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 0.88rem;
-            line-height: 1.4;
-            color: var(--text-main);
-        }
-
-        /* History Items */
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .history-item {
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 12px;
-            padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
-
-        .history-body {
-            font-size: 0.85rem;
-            color: var(--text-main);
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <header>
-        <h1>Your Days Better</h1>
-        <p>A peaceful space to align your mind & thoughts.</p>
-    </header>
-
-    <!-- Log Input Card -->
-    <div class="card">
-        <div class="section-title">1. How are you feeling?</div>
-        <div class="mood-grid" id="moodGrid">
-            <div class="mood-btn" onclick="selectMood(this, 'Happy')">
-                <span class="emoji">✨</span><span class="label">Happy</span>
-            </div>
-            <div class="mood-btn" onclick="selectMood(this, 'Calm')">
-                <span class="emoji">🌿</span><span class="label">Calm</span>
-            </div>
-            <div class="mood-btn" onclick="selectMood(this, 'Tired')">
-                <span class="emoji">🌙</span><span class="label">Tired</span>
-            </div>
-            <div class="mood-btn" onclick="selectMood(this, 'Anxious')">
-                <span class="emoji">🌧️</span><span class="label">Anxious</span>
-            </div>
-        </div>
-
-        <div class="section-title" style="margin-top: 18px;">2. Feelings Tags</div>
-        <div class="tags-container" id="tagsContainer">
-            <div class="tag-btn" onclick="toggleTag(this)">Peaceful</div>
-            <div class="tag-btn" onclick="toggleTag(this)">Productive</div>
-            <div class="tag-btn" onclick="toggleTag(this)">Overwhelmed</div>
-            <div class="tag-btn" onclick="toggleTag(this)">Grateful</div>
-            <div class="tag-btn" onclick="toggleTag(this)">Restless</div>
-        </div>
-
-        <div class="section-title" style="margin-top: 18px;">3. Write your thoughts</div>
-        <textarea id="journalText" placeholder="What was on your mind today?..."></textarea>
-
-        <button class="submit-btn" style="margin-top: 16px;" onclick="saveEntry()">Log Entry & Calculate Insights</button>
-    </div>
-
-    <!-- Insight Result Card -->
-    <div class="card" id="insightCard" style="display: none;">
-        <div class="section-title">Calculated Reflection</div>
-        <div class="insight-box" id="insightOutput"></div>
-    </div>
-
-    <!-- Past Logs -->
-    <div class="card">
-        <div class="section-title">Recent Entries</div>
-        <div class="history-list" id="historyList">
-            <p style="font-size: 0.85rem; color: var(--text-muted);">No entries yet today.</p>
-        </div>
-    </div>
-</div>
-
-<script>
-    let selectedMood = '';
-    let selectedTags = [];
-
-    function selectMood(el, mood) {
-        document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('selected'));
-        el.classList.add('selected');
-        selectedMood = mood;
-    }
-
-    function toggleTag(el) {
-        el.classList.toggle('selected');
-        const tag = el.innerText;
-        if (selectedTags.includes(tag)) {
-            selectedTags = selectedTags.filter(t => t !== tag);
-        } else {
-            selectedTags.push(tag);
-        }
-    }
-
-    function calculateKeywordInsight(text, mood) {
-        const lower = text.toLowerCase();
-        let scoreNature = 0;
-        let scoreRest = 0;
-        let scoreWork = 0;
-
-        // Rule-based keyword matching math
-        if (lower.includes('walk') || lower.includes('outside') || lower.includes('sun') || lower.includes('nature')) scoreNature++;
-        if (lower.includes('sleep') || lower.includes('tired') || lower.includes('rest') || lower.includes('bed')) scoreRest++;
-        if (lower.includes('work') || lower.includes('study') || lower.includes('busy') || lower.includes('project')) scoreWork++;
-
-        if (scoreNature > 0) {
-            return "Notice how movement or outdoor time connects to your reflections today. Keeping outdoor light in your routine works well for your mindset.";
-        } else if (scoreRest > 0) {
-            return "Your entry centers on energy and rest levels. Listen to your physical cues and prioritize low-demand recovery time.";
-        } else if (scoreWork > 0) {
-            return "Today carried focus on tasks and output. Balance active efforts with intentional wrap-up rituals tonight.";
-        } else if (mood === 'Happy' || mood === 'Calm') {
-            return "Your selected mood reflects a grounded baseline today. Tagging key moments helps maintain continuity over time.";
-        } else {
-            return "Thank you for taking time to log your thoughts. Expressing reflections consistently builds strong self-awareness patterns.";
-        }
-    }
-
-    function saveEntry() {
-        const text = document.getElementById('journalText').value;
-        if (!selectedMood) {
-            alert('Please select a mood icon first!');
-            return;
-        }
-
-        const insight = calculateKeywordInsight(text, selectedMood);
-        
-        // Show output
-        document.getElementById('insightOutput').innerText = insight;
-        document.getElementById('insightCard').style.display = 'block';
-
-        // Store locally
-        const entry = {
-            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
-            mood: selectedMood,
-            tags: selectedTags,
-            text: text,
-            insight: insight
-        };
-
-        let history = JSON.parse(localStorage.getItem('ydb_logs') || '[]');
-        history.unshift(entry);
-        localStorage.setItem('ydb_logs', JSON.stringify(history));
-
-        renderHistory();
-        resetForm();
-    }
-
-    function renderHistory() {
-        let history = JSON.parse(localStorage.getItem('ydb_logs') || '[]');
-        const listEl = document.getElementById('historyList');
-
-        if (history.length === 0) {
-            listEl.innerHTML = '<p style="font-size: 0.85rem; color: var(--text-muted);">No entries yet today.</p>';
-            return;
-        }
-
-        listEl.innerHTML = history.map(item => `
-            <div class="history-item">
-                <div class="history-header">
-                    <span>${item.date} — <strong>${item.mood}</strong></span>
-                    <span>${item.tags.join(', ')}</span>
-                </div>
-                <div class="history-body">${item.text ? `"${item.text}"` : 'No written notes.'}</div>
-            </div>
-        `).join('');
-    }
-
-    function resetForm() {
-        document.getElementById('journalText').value = '';
-        document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('selected'));
-        document.querySelectorAll('.tag-btn').forEach(btn => btn.classList.remove('selected'));
-        selectedMood = '';
-        selectedTags = [];
-    }
-
-    // Load saved history on launch
-    renderHistory();
-</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Days Better</title>
-    <!-- Imported Google Fonts matching your style sheet -->
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Great+Vibes&family=Pacifico&family=Sacramento&family=Bebas+Neue&family=Quicksand:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-deep: #1E002C;
-            --bg-gradient: linear-gradient(135deg, #1E002C 0%, #2A1845 50%, #12001C 100%);
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --card-border: rgba(255, 255, 255, 0.12);
-            --accent-pink: #FF99DD;
-            --accent-cyan: #B4E7FF;
-            --accent-lavender: #DCC8FF;
-            --text-main: #F2F0FF;
-            --text-muted: #B3A5C9;
+            /* Default Dreamy Light Palette */
+            --bg-base: #F8F4FF;
+            --bg-gradient: radial-gradient(circle at 10% 10%, #FEE5F1 0%, #EAE0F9 45%, #E3F2FD 85%);
+            --card-bg: rgba(255, 255, 255, 0.75);
+            --card-border: rgba(255, 255, 255, 0.9);
+            --text-main: #331B45;
+            --text-muted: #7E6B90;
+            --accent-primary: #C972DB;
+            --accent-pill: #F2D5F8;
+            --accent-pleasant: #D2F7E1;
+            --accent-difficult: #E2D5FC;
             --current-font: 'Quicksand', sans-serif;
+            --shadow-soft: 0 10px 30px rgba(162, 131, 189, 0.12);
+        }
+
+        /* Dark Theme Class Option */
+        body.theme-dark {
+            --bg-base: #140521;
+            --bg-gradient: radial-gradient(circle at 10% 10%, #2D0B3F 0%, #17072B 50%, #090214 100%);
+            --card-bg: rgba(255, 255, 255, 0.06);
+            --card-border: rgba(255, 255, 255, 0.12);
+            --text-main: #F4ECFD;
+            --text-muted: #A895BD;
+            --accent-primary: #E58CFC;
+            --accent-pill: rgba(229, 140, 252, 0.2);
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
         * {
@@ -401,12 +45,13 @@
 
         body {
             background: var(--bg-gradient);
+            background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 16px 16px 90px 16px;
+            padding: 16px 16px 100px 16px;
         }
 
         .container {
@@ -414,624 +59,662 @@
             max-width: 420px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
         }
 
-        header {
-            text-align: center;
-            padding: 10px 0 5px 0;
+        /* Top Header Area */
+        .app-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 4px 10px 4px;
         }
 
-        header h1 {
-            font-size: 1.7rem;
+        .app-title {
+            font-size: 1.35rem;
             font-weight: 700;
-            background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 4px;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
         }
 
-        header p {
+        .app-title span { color: var(--accent-primary); }
+
+        .saved-status {
+            font-size: 0.75rem;
+            color: #55B978;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
+        }
+
+        /* Sub Navigation Tabs (Log / Stats) inside feature pages */
+        .sub-tab-nav {
+            display: flex;
+            gap: 16px;
+            border-bottom: 1px solid rgba(126, 107, 144, 0.15);
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+        }
+
+        .sub-tab-btn {
+            background: none;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
             color: var(--text-muted);
-            font-size: 0.85rem;
+            cursor: pointer;
+            padding-bottom: 4px;
+            position: relative;
         }
 
-        /* Tab Content Sections */
+        .sub-tab-btn.active {
+            color: var(--text-main);
+        }
+
+        .sub-tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -9px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-primary);
+            border-radius: 3px;
+        }
+
+        /* Clean Isolated Main Tabs */
         .tab-section {
             display: none;
             flex-direction: column;
-            gap: 16px;
-            animation: fadeIn 0.3s ease-in-out;
+            gap: 14px;
+            animation: fadeIn 0.2s ease-out;
         }
 
-        .tab-section.active {
-            display: flex;
-        }
+        .tab-section.active { display: flex; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Surface Cards */
+        /* Soft Glass Surfaces */
         .surface-card {
             background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border-radius: 22px;
+            padding: 18px;
+            box-shadow: var(--shadow-soft);
         }
 
-        .quote-box {
-            text-align: center;
-            font-style: italic;
-            color: var(--accent-lavender);
-            font-size: 0.92rem;
-            line-height: 1.4;
+        .greeting-header {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 4px;
         }
 
-        /* Section Titles */
-        .section-title {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .greeting-sub {
+            font-size: 0.85rem;
             color: var(--text-muted);
-            margin-bottom: 10px;
-            font-weight: 600;
+            margin-top: 2px;
         }
 
-        /* Floating Action Button (FAB) */
-        .fab-btn {
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-lavender));
-            color: #1E002C;
+        /* Mood Selector Row */
+        .mood-faces-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 16px 0 8px 0;
+        }
+
+        .mood-face-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            background: none;
             border: none;
-            border-radius: 50px;
-            padding: 12px 24px;
-            font-weight: 600;
-            font-size: 0.95rem;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 153, 221, 0.3);
+        }
+
+        .face-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            margin: 10px auto;
+            font-size: 1.4rem;
             transition: transform 0.2s;
         }
 
-        .fab-btn:active {
-            transform: scale(0.96);
+        .mood-face-btn.selected .face-icon {
+            transform: scale(1.15);
+            box-shadow: 0 0 0 3px var(--accent-primary);
         }
 
-        /* Modal Overlays for Logging */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(18, 0, 28, 0.85);
-            backdrop-filter: blur(8px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .modal-overlay.open {
-            display: flex;
-        }
-
-        .modal-card {
-            background: #250B3B;
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
-            padding: 24px;
-            width: 100%;
-            max-width: 380px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--accent-pink);
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
+        .face-label {
+            font-size: 0.75rem;
             color: var(--text-muted);
-            font-size: 1.2rem;
-            cursor: pointer;
         }
 
-        /* Mood Grid inside Modal */
-        .mood-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .mood-option {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
+        /* Buttons & Pills */
+        .action-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #D48BEB 0%, #B892F7 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
             padding: 14px;
-            text-align: center;
-            color: var(--text-main);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .mood-option.selected {
-            background: rgba(255, 153, 221, 0.15);
-            border-color: var(--accent-pink);
-        }
-
-        /* Feeling Tagger Type Selector */
-        .type-selector {
-            display: flex;
-            gap: 10px;
-        }
-
-        .type-btn {
-            flex: 1;
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid var(--card-border);
-            background: transparent;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
-
-        .type-btn.active-pleasant {
-            background: rgba(180, 231, 255, 0.15);
-            border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
+            font-size: 0.95rem;
             font-weight: 600;
-        }
-
-        .type-btn.active-difficult {
-            background: rgba(255, 153, 221, 0.15);
-            border-color: var(--accent-pink);
-            color: var(--accent-pink);
-            font-weight: 600;
-        }
-
-        /* Journal Rich Toolbar */
-        .journal-toolbar {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            background: rgba(0,0,0,0.2);
-            padding: 8px;
-            border-radius: 10px;
-        }
-
-        .tool-btn {
-            background: rgba(255,255,255,0.08);
-            border: none;
-            color: var(--text-main);
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
             cursor: pointer;
+            box-shadow: 0 6px 20px rgba(184, 146, 247, 0.35);
+            margin-top: 8px;
+            transition: transform 0.15s;
         }
 
-        .tool-btn:hover {
-            background: rgba(255,255,255,0.15);
+        .action-btn:active { transform: scale(0.98); }
+
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 14px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            margin: 4px;
+            cursor: pointer;
+            border: 1px solid transparent;
         }
 
+        .tag-pill.pleasant {
+            background: #E6FAEE;
+            color: #267A47;
+            border-color: #BDEFD0;
+        }
+
+        .tag-pill.difficult {
+            background: #F1EAFF;
+            color: #5D3799;
+            border-color: #D9C7FA;
+        }
+
+        .tag-pill.selected {
+            box-shadow: 0 0 0 2px var(--accent-primary);
+        }
+
+        /* Input Controls */
         textarea, input[type="text"] {
             width: 100%;
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 12px;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            resize: none;
-            outline: none;
-        }
-
-        textarea:focus, input:focus {
-            border-color: var(--accent-lavender);
-        }
-
-        /* Settings Sub-Pages */
-        .settings-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .setting-item {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--card-border);
-            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(126, 107, 144, 0.2);
             border-radius: 14px;
+            padding: 12px 14px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            outline: none;
+            margin-top: 8px;
+        }
+
+        body.theme-dark textarea, body.theme-dark input[type="text"] {
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        /* Rich Text Editor Toolbar */
+        .color-dots-row {
             display: flex;
-            justify-content: space-between;
+            gap: 8px;
+            margin: 10px 0;
             align-items: center;
+        }
+
+        .color-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
             cursor: pointer;
-            transition: background 0.2s;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .setting-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .settings-subpanel {
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .settings-subpanel.active {
-            display: flex;
-        }
-
-        .back-settings {
-            background: none;
-            border: none;
-            color: var(--accent-cyan);
+        .format-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-weight: bold;
             font-size: 0.85rem;
             cursor: pointer;
-            align-self: flex-start;
-            margin-bottom: 4px;
         }
 
-        .font-option-btn, .theme-option-btn {
-            width: 100%;
-            padding: 10px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--card-border);
-            border-radius: 10px;
-            color: var(--text-main);
-            text-align: left;
+        /* Color Swatches Grid in Settings */
+        .swatch-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .swatch-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
             cursor: pointer;
-            font-size: 0.9rem;
+            border: 2px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            color: white;
+            font-weight: bold;
         }
 
         /* Bottom Tab Navigation Bar */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
+            bottom: 12px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100%;
-            max-width: 420px;
-            background: rgba(26, 6, 42, 0.92);
-            backdrop-filter: blur(16px);
-            border-top: 1px solid var(--card-border);
+            width: calc(100% - 32px);
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 35px;
             display: flex;
             justify-content: space-around;
-            padding: 12px 0;
+            padding: 8px 0;
+            box-shadow: 0 10px 30px rgba(110, 80, 140, 0.15);
             z-index: 500;
+        }
+
+        body.theme-dark .bottom-nav {
+            background: rgba(20, 5, 33, 0.9);
         }
 
         .nav-item {
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
             cursor: pointer;
-            transition: color 0.2s;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: all 0.2s;
         }
 
-        .nav-item span {
-            font-size: 1.2rem;
-        }
+        .nav-item span { font-size: 1.15rem; }
 
         .nav-item.active {
-            color: var(--accent-pink);
+            color: var(--text-main);
+            background: var(--accent-pill);
             font-weight: 600;
         }
 
-        .entry-list-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--card-border);
-            padding: 12px;
-            border-radius: 12px;
-            margin-top: 8px;
-            font-size: 0.9rem;
+        .entry-item {
+            border-bottom: 1px solid rgba(126, 107, 144, 0.1);
+            padding: 10px 0;
+            font-size: 0.88rem;
         }
+
+        .entry-item:last-child { border-bottom: none; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <header>
-            <h1>Your Days Better</h1>
-            <p>A peaceful space to align your mind & thoughts.</p>
-        </header>
+        <!-- Top App Title Bar -->
+        <div class="app-top-bar">
+            <div class="app-title">Your days <span>better</span></div>
+            <div class="saved-status">● Saved locally</div>
+        </div>
 
-        <!-- TAB 1: MOOD TRACKER -->
+        <!-- TAB 1: MOOD -->
         <section id="tab-mood" class="tab-section active">
-            <div class="surface-card quote-box" id="dailyQuote">
-                "Loading your daily reflection..."
+            <div class="sub-tab-nav">
+                <button class="sub-tab-btn active" onclick="switchSubTab('mood-log', this)">Log</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('mood-stats', this)">Stats</button>
             </div>
 
-            <button class="fab-btn" onclick="openModal('moodModal')">+ Log New Mood</button>
+            <!-- Mood Log Sub-View -->
+            <div id="sub-mood-log" class="sub-view" style="display: flex; flex-direction: column; gap: 14px;">
+                <div class="surface-card">
+                    <div class="greeting-sub" id="currentDateStr">Sunday, Nov 1</div>
+                    <div class="greeting-header">Good day!</div>
+                    <div class="greeting-sub">A fresh page. How does it feel right now?</div>
 
-            <div class="surface-card">
-                <div class="section-title">Recent Moods</div>
-                <div id="moodHistoryList"><p style="color:var(--text-muted); font-size:0.85rem;">No mood entries yet.</p></div>
+                    <div class="mood-faces-row">
+                        <button class="mood-face-btn" onclick="selectMoodFace(this, 'Rough', '#8875B4')">
+                            <div class="face-icon" style="background:#E3DCF5; color:#5D4696;">☹️</div>
+                            <span class="face-label">Rough</span>
+                        </button>
+                        <button class="mood-face-btn" onclick="selectMoodFace(this, 'Low', '#5D9CEC')">
+                            <div class="face-icon" style="background:#D9E8FC; color:#2A68C2;">🙁</div>
+                            <span class="face-label">Low</span>
+                        </button>
+                        <button class="mood-face-btn" onclick="selectMoodFace(this, 'Okay', '#4FC1E9')">
+                            <div class="face-icon" style="background:#D6F4FF; color:#1286B1;">😐</div>
+                            <span class="face-label">Okay</span>
+                        </button>
+                        <button class="mood-face-btn selected" onclick="selectMoodFace(this, 'Good', '#A0D468')">
+                            <div class="face-icon" style="background:#E4F5D2; color:#548A1B;">🙂</div>
+                            <span class="face-label">Good</span>
+                        </button>
+                        <button class="mood-face-btn" onclick="selectMoodFace(this, 'Great', '#FFCE54')">
+                            <div class="face-icon" style="background:#FFF1C9; color:#A67B0C;">😄</div>
+                            <span class="face-label">Great</span>
+                        </button>
+                    </div>
+
+                    <textarea id="moodNote" rows="2" placeholder="Add a short note (optional)..."></textarea>
+                    <button class="action-btn" onclick="saveMoodLog()">Log mood</button>
+                </div>
+
+                <div class="surface-card">
+                    <div style="font-size:0.8rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px;">Recent Moods</div>
+                    <div id="moodRecentList"><p style="color:var(--text-muted); font-size:0.85rem;">No recent logs yet.</p></div>
+                </div>
+            </div>
+
+            <!-- Mood Stats Sub-View -->
+            <div id="sub-mood-stats" class="sub-view" style="display: none; flex-direction: column; gap: 14px;">
+                <div class="surface-card">
+                    <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Mood Insights</div>
+                    <div id="moodStatsSummary" style="font-size:0.9rem; line-height:1.6;">
+                        Log your first mood to generate personalized stats!
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- TAB 2: FEELINGS LOG -->
+        <!-- TAB 2: FEELINGS -->
         <section id="tab-feelings" class="tab-section">
-            <button class="fab-btn" onclick="openModal('feelingModal')">+ Add Feeling Tag</button>
+            <div class="sub-tab-nav">
+                <button class="sub-tab-btn active" onclick="switchSubTab('feelings-log', this)">Log</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('feelings-stats', this)">Stats</button>
+            </div>
 
-            <div class="surface-card">
-                <div class="section-title">Your Feelings Breakdown</div>
-                <div id="feelingsTagsList"><p style="color:var(--text-muted); font-size:0.85rem;">No feelings logged yet.</p></div>
+            <div id="sub-feelings-log" class="sub-view" style="display: flex; flex-direction: column; gap: 14px;">
+                <div class="surface-card">
+                    <div class="greeting-header">What are you feeling?</div>
+                    <div class="greeting-sub" style="margin-bottom:12px;">Pick as many as fit, there are no wrong ones.</div>
+
+                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:8px 0 4px 0;">Pleasant</div>
+                    <div id="pleasantPills">
+                        <span class="tag-pill pleasant" onclick="toggleTag(this, 'cheerful', 'pleasant')">cheerful</span>
+                        <span class="tag-pill pleasant" onclick="toggleTag(this, 'happy', 'pleasant')">happy</span>
+                        <span class="tag-pill pleasant" onclick="toggleTag(this, 'hopeful', 'pleasant')">hopeful</span>
+                        <span class="tag-pill pleasant" onclick="toggleTag(this, 'calm', 'pleasant')">calm</span>
+                        <span class="tag-pill pleasant" onclick="toggleTag(this, 'grateful', 'pleasant')">grateful</span>
+                        <span class="tag-pill pleasant" onclick="toggleTag(this, 'loved', 'pleasant')">loved</span>
+                    </div>
+
+                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:12px 0 4px 0;">Difficult</div>
+                    <div id="difficultPills">
+                        <span class="tag-pill difficult" onclick="toggleTag(this, 'sad', 'difficult')">sad</span>
+                        <span class="tag-pill difficult" onclick="toggleTag(this, 'anxious', 'difficult')">anxious</span>
+                        <span class="tag-pill difficult" onclick="toggleTag(this, 'lonely', 'difficult')">lonely</span>
+                        <span class="tag-pill difficult" onclick="toggleTag(this, 'stressed', 'difficult')">stressed</span>
+                        <span class="tag-pill difficult" onclick="toggleTag(this, 'tired', 'difficult')">tired</span>
+                        <span class="tag-pill difficult" onclick="toggleTag(this, 'overwhelmed', 'difficult')">overwhelmed</span>
+                    </div>
+
+                    <input type="text" id="customFeelingInput" placeholder="+ Add your own feeling tag..." style="margin-top:12px;">
+                    <button class="action-btn" onclick="saveFeelingsLog()">Log feelings</button>
+                </div>
+            </div>
+
+            <div id="sub-feelings-stats" class="sub-view" style="display: none; flex-direction: column; gap: 14px;">
+                <div class="surface-card">
+                    <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Balance & Breakdown</div>
+                    <div id="feelingsBalanceBar" style="height:10px; background:#E2D5FC; border-radius:10px; overflow:hidden; display:flex; margin-bottom:8px;">
+                        <div id="pleasantFill" style="width:70%; background:#8CE4AC; height:100%;"></div>
+                    </div>
+                    <div id="feelingsRatioText" style="font-size:0.85rem; color:var(--text-muted); margin-bottom:14px;">Pleasant 70% · Difficult 30%</div>
+                    <div id="mostFeltList" style="font-size:0.9rem;"></div>
+                </div>
             </div>
         </section>
 
-        <!-- TAB 3: JOURNALING -->
+        <!-- TAB 3: JOURNAL -->
         <section id="tab-journal" class="tab-section">
             <div class="surface-card">
-                <div class="section-title">Today's Reflection Prompt</div>
-                <p id="journalPromptText" style="font-size: 0.95rem; color: var(--accent-lavender); line-height: 1.4;"></p>
+                <div class="greeting-header">Write it out</div>
+                <div class="greeting-sub" id="journalPromptText" style="margin-bottom:10px; font-style:italic; color:var(--accent-primary);">"How do you want today to feel?"</div>
+
+                <input type="text" id="journalTitle" placeholder="Title (optional)">
+
+                <div class="color-dots-row">
+                    <span style="font-size:0.8rem; color:var(--text-muted); margin-right:4px;">Color:</span>
+                    <div class="color-dot" style="background:#331B45" onclick="setEditorColor('#331B45')"></div>
+                    <div class="color-dot" style="background:#C972DB" onclick="setEditorColor('#C972DB')"></div>
+                    <div class="color-dot" style="background:#5D9CEC" onclick="setEditorColor('#5D9CEC')"></div>
+                    <div class="color-dot" style="background:#48CFAD" onclick="setEditorColor('#48CFAD')"></div>
+                    <div class="color-dot" style="background:#ED5565" onclick="setEditorColor('#ED5565')"></div>
+                    <button class="format-btn" onclick="formatEditor('bold')">B</button>
+                    <button class="format-btn" onclick="formatEditor('italic')"><i>I</i></button>
+                </div>
+
+                <textarea id="journalBody" rows="6" placeholder="Start writing privately..."></textarea>
+                <button class="action-btn" onclick="saveJournalLog()">Save entry</button>
             </div>
 
-            <button class="fab-btn" onclick="openModal('journalModal')">+ Write Journal Entry</button>
-
             <div class="surface-card">
-                <div class="section-title">Journal Entries</div>
-                <div id="journalEntriesList"><p style="color:var(--text-muted); font-size:0.85rem;">No journal logs yet.</p></div>
+                <div style="font-size:0.8rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px;">Past Entries</div>
+                <div id="journalEntriesList"><p style="color:var(--text-muted); font-size:0.85rem;">No saved entries yet.</p></div>
             </div>
         </section>
 
         <!-- TAB 4: SETTINGS -->
         <section id="tab-settings" class="tab-section">
             <div class="surface-card">
-                <!-- Main Settings Menu -->
-                <div id="settingsMain" class="settings-list">
-                    <div class="section-title">Preferences</div>
-                    <div class="setting-item" onclick="openSettingsSub('fontSub')">
-                        <span>Typography & Fonts</span>
-                        <span style="color:var(--text-muted)">›</span>
-                    </div>
-                    <div class="setting-item" onclick="openSettingsSub('themeSub')">
-                        <span>Gradient & Color Theme</span>
-                        <span style="color:var(--text-muted)">›</span>
-                    </div>
-                    <div class="setting-item" onclick="alert('All your entries are securely saved in your browser storage.')">
-                        <span>Data Storage Info</span>
-                        <span style="color:var(--text-muted)">›</span>
-                    </div>
+                <div class="greeting-header" style="margin-bottom:12px;">Settings</div>
+
+                <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Appearance Mode</div>
+                <div style="display:flex; gap:10px; margin-bottom:16px;">
+                    <button class="format-btn" style="flex:1; padding:10px;" onclick="setLightDarkTheme(false)">☀️ Light</button>
+                    <button class="format-btn" style="flex:1; padding:10px;" onclick="setLightDarkTheme(true)">🌙 Dark</button>
                 </div>
 
-                <!-- Font Sub-Panel -->
-                <div id="fontSub" class="settings-subpanel">
-                    <button class="back-settings" onclick="closeSettingsSub()">‹ Back to Settings</button>
-                    <div class="section-title">Choose Font Style</div>
-                    <button class="font-option-btn" style="font-family:'Quicksand'" onclick="setAppFont('Quicksand', 'Modern Clean')">Modern Clean (Default)</button>
-                    <button class="font-option-btn" style="font-family:'Great Vibes'; font-size:1.2rem;" onclick="setAppFont('Great Vibes', 'Elegance Script')">Elegance Script (Great Vibes)</button>
-                    <button class="font-option-btn" style="font-family:'Dancing Script'" onclick="setAppFont('Dancing Script', 'Kind-hearted Cursive')">Kind-hearted Cursive</button>
-                    <button class="font-option-btn" style="font-family:'Pacifico'" onclick="setAppFont('Pacifico', 'Fresh Styled')">Fresh Styled (Pacifico)</button>
-                    <button class="font-option-btn" style="font-family:'Bebas Neue'; letter-spacing:1px;" onclick="setAppFont('Bebas Neue', 'Bold Headliner')">Bold Headliner (Bebas)</button>
+                <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Color Palettes</div>
+                <div class="swatch-grid">
+                    <div class="swatch-circle" style="background:linear-gradient(135deg, #FEE5F1, #EAE0F9);" onclick="applyPalette('radial-gradient(circle at 10% 10%, #FEE5F1 0%, #EAE0F9 45%, #E3F2FD 85%)')">Dusk</div>
+                    <div class="swatch-circle" style="background:linear-gradient(135deg, #E0F7FA, #E1BEE7);" onclick="applyPalette('radial-gradient(circle at 10% 10%, #E0F7FA 0%, #E1BEE7 50%, #FFF3E0 100%)')">Berry</div>
+                    <div class="swatch-circle" style="background:linear-gradient(135deg, #E8F5E9, #C8E6C9);" onclick="applyPalette('radial-gradient(circle at 10% 10%, #E8F5E9 0%, #C8E6C9 50%, #E0F2F1 100%)')">Moss</div>
+                    <div class="swatch-circle" style="background:linear-gradient(135deg, #FFF3E0, #FFE0B2);" onclick="applyPalette('radial-gradient(circle at 10% 10%, #FFF3E0 0%, #FFE0B2 50%, #FFCCBC 100%)')">Peach</div>
+                    <div class="swatch-circle" style="background:linear-gradient(135deg, #E1F5FE, #B3E5FC);" onclick="applyPalette('radial-gradient(circle at 10% 10%, #E1F5FE 0%, #B3E5FC 50%, #E8EAF6 100%)')">Tide</div>
+                    <div class="swatch-circle" style="background:linear-gradient(135deg, #F3E5F5, #E1BEE7);" onclick="applyPalette('radial-gradient(circle at 10% 10%, #F3E5F5 0%, #E1BEE7 50%, #D1C4E9 100%)')">Orchid</div>
                 </div>
 
-                <!-- Theme Sub-Panel -->
-                <div id="themeSub" class="settings-subpanel">
-                    <button class="back-settings" onclick="closeSettingsSub()">‹ Back to Settings</button>
-                    <div class="section-title">Choose Color Theme</div>
-                    <button class="theme-option-btn" onclick="setAppTheme('linear-gradient(135deg, #1E002C 0%, #2A1845 50%, #12001C 100%)', '#1E002C')">Twilight Purple (Default)</button>
-                    <button class="theme-option-btn" onclick="setAppTheme('linear-gradient(135deg, #0A192F 0%, #172A45 50%, #020C1B 100%)', '#0A192F')">Midnight Blue</button>
-                    <button class="theme-option-btn" onclick="setAppTheme('linear-gradient(135deg, #2D1537 0%, #4A2855 50%, #1F0D27 100%)', '#2D1537')">Soft Mauve Dusk</button>
-                </div>
+                <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:16px 0 6px 0;">App Font</div>
+                <select id="fontSelect" onchange="changeFont(this.value)" style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(0,0,0,0.1);">
+                    <option value="'Quicksand', sans-serif">Clean (Quicksand)</option>
+                    <option value="'Comfortaa', cursive">Soft (Comfortaa)</option>
+                    <option value="'Great Vibes', cursive">Elegance (Great Vibes)</option>
+                    <option value="'Dancing Script', cursive">Kind-hearted Cursive</option>
+                    <option value="'Pacifico', cursive">Fresh (Pacifico)</option>
+                    <option value="'Sacramento', cursive">Spectacular Script</option>
+                </select>
+
+                <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:16px 0 6px 0;">Local Data</div>
+                <button class="format-btn" style="width:100%; padding:10px;" onclick="exportJSON()">Export Private Data Backup (.json)</button>
             </div>
         </section>
     </div>
 
-    <!-- BOTTOM TAB NAVIGATION -->
+    <!-- MAIN BOTTOM TAB NAVIGATION (4 DISTINCT TABS) -->
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="switchTab('mood', this)"><span>🌙</span>Mood</button>
-        <button class="nav-item" onclick="switchTab('feelings', this)"><span>🌿</span>Feelings</button>
-        <button class="nav-item" onclick="switchTab('journal', this)"><span>✍️</span>Journal</button>
-        <button class="nav-item" onclick="switchTab('settings', this)"><span>⚙️</span>Settings</button>
+        <button class="nav-item active" onclick="switchMainTab('mood', this)"><span>🙂</span>Mood</button>
+        <button class="nav-item" onclick="switchMainTab('feelings', this)"><span>♡</span>Feelings</button>
+        <button class="nav-item" onclick="switchMainTab('journal', this)"><span>📖</span>Journal</button>
+        <button class="nav-item" onclick="switchMainTab('settings', this)"><span>⚙️</span>Settings</button>
     </nav>
 
-    <!-- MODAL: LOG MOOD -->
-    <div id="moodModal" class="modal-overlay">
-        <div class="modal-card">
-            <div class="modal-header"><span>How are you feeling?</span><button class="close-modal" onclick="closeModal('moodModal')">×</button></div>
-            <div class="mood-grid">
-                <div class="mood-option" onclick="selectMood(this, '✨ Happy')">✨ Happy</div>
-                <div class="mood-option" onclick="selectMood(this, '🌿 Calm')">🌿 Calm</div>
-                <div class="mood-option" onclick="selectMood(this, '🌙 Tired')">🌙 Tired</div>
-                <div class="mood-option" onclick="selectMood(this, '🌧️ Anxious')">🌧️ Anxious</div>
-            </div>
-            <textarea id="moodNote" placeholder="Add a short note about your mood... (optional)" rows="2"></textarea>
-            <button class="fab-btn" style="width:100%; margin:0;" onclick="saveMoodEntry()">Save Mood</button>
-        </div>
-    </div>
-
-    <!-- MODAL: ADD FEELING -->
-    <div id="feelingModal" class="modal-overlay">
-        <div class="modal-card">
-            <div class="modal-header"><span>Add Feeling Tag</span><button class="close-modal" onclick="closeModal('feelingModal')">×</button></div>
-            <input type="text" id="feelingInput" placeholder="e.g. Inspired, Restless, Grateful...">
-            <div class="type-selector">
-                <button type="button" class="type-btn active-pleasant" id="btnPleasant" onclick="setFeelingType('pleasant')">Pleasant</button>
-                <button type="button" class="type-btn" id="btnDifficult" onclick="setFeelingType('difficult')">Difficult</button>
-            </div>
-            <button class="fab-btn" style="width:100%; margin:0;" onclick="saveFeelingTag()">Save Feeling</button>
-        </div>
-    </div>
-
-    <!-- MODAL: WRITE JOURNAL -->
-    <div id="journalModal" class="modal-overlay">
-        <div class="modal-card" style="max-width: 400px;">
-            <div class="modal-header"><span>Journal Reflection</span><button class="close-modal" onclick="closeModal('journalModal')">×</button></div>
-            <div class="journal-toolbar">
-                <button class="tool-btn" onclick="formatText('bold')"><b>B</b></button>
-                <button class="tool-btn" onclick="formatText('italic')"><i>I</i></button>
-                <button class="tool-btn" onclick="formatText('underline')"><u>U</u></button>
-                <button class="tool-btn" onclick="changeTextColor('#FF99DD')">Pink</button>
-                <button class="tool-btn" onclick="changeTextColor('#B4E7FF')">Cyan</button>
-                <button class="tool-btn" onclick="changeTextColor('#DCC8FF')">Lavender</button>
-            </div>
-            <textarea id="journalText" placeholder="Write your thoughts here..." rows="6" style="font-size:1rem;"></textarea>
-            <button class="fab-btn" style="width:100%; margin:0;" onclick="saveJournalEntry()">Save Entry</button>
-        </div>
-    </div>
-
     <script>
-        /* Rotating Quotes & Prompts */
-        const quotes = [
-            "\"Peace is the result of retraining your mind to process life as it is, rather than as you think it should be.\"",
-            "\"Your mind is a sacred garden. Water what brings you joy and lets go of what does not serve you.\"",
-            "\"Small steps in the right direction can turn out to be the biggest step of your life.\"",
-            "\"Allow yourself to rest. The world can wait for your brilliance tomorrow.\""
-        ];
-        document.getElementById('dailyQuote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+        // Set current date string
+        const options = { weekday: 'long', month: 'short', day: 'numeric' };
+        document.getElementById('currentDateStr').innerText = new Date().toLocaleDateString('en-US', options);
 
-        const prompts = [
-            "What is one quiet moment today that made you feel at ease?",
-            "What is a heavy thought you are ready to gently put down?",
-            "What is something small you did today that you are proud of?",
-            "If your mind had a weather forecast right now, what would it look like?"
-        ];
-        document.getElementById('journalPromptText').innerText = prompts[Math.floor(Math.random() * prompts.length)];
-
-        /* Tab Navigation Logic */
-        function switchTab(tabId, btn) {
+        /* Main Navigation Switching */
+        function switchMainTab(tabId, btn) {
             document.querySelectorAll('.tab-section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
             btn.classList.add('active');
         }
 
-        /* Modal Handlers */
-        function openModal(modalId) { document.getElementById(modalId).classList.add('open'); }
-        function closeModal(modalId) { document.getElementById(modalId).classList.remove('open'); }
+        /* Sub Tab Navigation (Log vs Stats inside features) */
+        function switchSubTab(subId, btn) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
 
-        /* Mood Selection State */
-        let selectedMoodValue = "✨ Happy";
-        function selectMood(el, mood) {
-            document.querySelectorAll('.mood-option').forEach(o => o.classList.remove('selected'));
-            el.classList.add('selected');
-            selectedMoodValue = mood;
+            const section = parent.parentElement;
+            section.querySelectorAll('.sub-view').forEach(v => v.style.display = 'none');
+            document.getElementById('sub-' + subId).style.display = 'flex';
         }
 
-        /* Feeling Type State */
-        let feelingTypeState = 'pleasant';
-        function setFeelingType(type) {
-            feelingTypeState = type;
-            if(type === 'pleasant') {
-                document.getElementById('btnPleasant').className = 'type-btn active-pleasant';
-                document.getElementById('btnDifficult').className = 'type-btn';
+        /* Mood Selection */
+        let currentMood = 'Good';
+        function selectMoodFace(btn, moodName) {
+            document.querySelectorAll('.mood-face-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            currentMood = moodName;
+        }
+
+        /* Feelings Selection */
+        let selectedTags = [];
+        function toggleTag(el, tag, type) {
+            el.classList.toggle('selected');
+            if(el.classList.contains('selected')) {
+                selectedTags.push({ tag, type });
             } else {
-                document.getElementById('btnDifficult').className = 'type-btn active-difficult';
-                document.getElementById('btnPleasant').className = 'type-btn';
+                selectedTags = selectedTags.filter(t => t.tag !== tag);
             }
         }
 
-        /* Settings Subpanels */
-        function openSettingsSub(subId) {
-            document.getElementById('settingsMain').style.display = 'none';
-            document.getElementById(subId).classList.add('active');
-        }
-        function closeSettingsSub() {
-            document.querySelectorAll('.settings-subpanel').forEach(p => p.classList.remove('active'));
-            document.getElementById('settingsMain').style.display = 'flex';
-        }
+        /* Private Storage Handling */
+        let moods = JSON.parse(localStorage.getItem('yb_v2_moods') || '[]');
+        let feelings = JSON.parse(localStorage.getItem('yb_v2_feelings') || '[]');
+        let journals = JSON.parse(localStorage.getItem('yb_v2_journals') || '[]');
 
-        function setAppFont(fontFamily, name) {
-            document.documentElement.style.setProperty('--current-font', fontFamily);
-            alert("Font changed to " + name + "!");
-        }
-
-        function setAppTheme(gradient, deepBg) {
-            document.documentElement.style.setProperty('--bg-gradient', gradient);
-            document.documentElement.style.setProperty('--bg-deep', deepBg);
-            alert("Theme updated successfully!");
-        }
-
-        /* Saving Entries (Local Storage Powered) */
-        let moods = JSON.parse(localStorage.getItem('yb_moods') || '[]');
-        let feelings = JSON.parse(localStorage.getItem('yb_feelings') || '[]');
-        let journals = JSON.parse(localStorage.getItem('yb_journals') || '[]');
-
-        renderAll();
-
-        function saveMoodEntry() {
+        function saveMoodLog() {
             const note = document.getElementById('moodNote').value;
-            moods.unshift({ mood: selectedMoodValue, note, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
-            localStorage.setItem('yb_moods', JSON.stringify(moods));
+            moods.unshift({ mood: currentMood, note, date: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) });
+            localStorage.setItem('yb_v2_moods', JSON.stringify(moods));
             document.getElementById('moodNote').value = '';
-            closeModal('moodModal');
             renderMoods();
+            alert('Mood logged cleanly!');
         }
 
-        function saveFeelingTag() {
-            const val = document.getElementById('feelingInput').value.trim();
-            if(!val) return;
-            feelings.unshift({ tag: val, type: feelingTypeState });
-            localStorage.setItem('yb_feelings', JSON.stringify(feelings));
-            document.getElementById('feelingInput').value = '';
-            closeModal('feelingModal');
-            renderFeelings();
+        function saveFeelingsLog() {
+            const custom = document.getElementById('customFeelingInput').value.trim();
+            if(custom) selectedTags.push({ tag: custom, type: 'pleasant' });
+            if(selectedTags.length === 0) return alert('Select at least one feeling!');
+
+            feelings.unshift({ tags: [...selectedTags], date: new Date().toLocaleDateString() });
+            localStorage.setItem('yb_v2_feelings', JSON.stringify(feelings));
+            document.getElementById('customFeelingInput').value = '';
+            renderFeelingsStats();
+            alert('Feelings saved!');
         }
 
-        function saveJournalEntry() {
-            const text = document.getElementById('journalText').value;
-            if(!text.trim()) return;
-            journals.unshift({ text, time: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
-            localStorage.setItem('yb_journals', JSON.stringify(journals));
-            document.getElementById('journalText').value = '';
-            closeModal('journalModal');
+        function saveJournalLog() {
+            const title = document.getElementById('journalTitle').value;
+            const body = document.getElementById('journalBody').value;
+            if(!body.trim()) return alert('Write a little before saving!');
+
+            journals.unshift({ title, body, date: new Date().toLocaleDateString() });
+            localStorage.setItem('yb_v2_journals', JSON.stringify(journals));
+            document.getElementById('journalTitle').value = '';
+            document.getElementById('journalBody').value = '';
             renderJournals();
+            alert('Journal entry saved privately!');
         }
 
         function renderMoods() {
-            const list = document.getElementById('moodHistoryList');
-            if(moods.length === 0) { list.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No mood entries yet.</p>'; return; }
-            list.innerHTML = moods.map(m => `<div class="entry-list-item"><strong>${m.mood}</strong> <span style="font-size:0.75rem; color:var(--text-muted); float:right;">${m.time}</span>${m.note ? '<br><span style="color:var(--text-muted); font-size:0.85rem;">'+m.note+'</span>' : ''}</div>`).join('');
+            const container = document.getElementById('moodRecentList');
+            if(!moods.length) return container.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No recent logs yet.</p>';
+            container.innerHTML = moods.slice(0, 5).map(m => `
+                <div class="entry-item">
+                    <strong>${m.mood}</strong> <span style="float:right; font-size:0.75rem; color:var(--text-muted);">${m.date}</span>
+                    ${m.note ? `<div style="color:var(--text-muted); font-size:0.82rem; margin-top:2px;">${m.note}</div>` : ''}
+                </div>
+            `).join('');
+
+            document.getElementById('moodStatsSummary').innerHTML = `
+                Total Mood Logs: <strong>${moods.length}</strong><br>
+                Latest Mood: <strong>${moods[0].mood}</strong>
+            `;
         }
 
-        function renderFeelings() {
-            const list = document.getElementById('feelingsTagsList');
-            if(feelings.length === 0) { list.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No feelings logged yet.</p>'; return; }
-            list.innerHTML = feelings.map(f => `<div class="entry-list-item" style="border-left: 3px solid ${f.type === 'pleasant' ? 'var(--accent-cyan)' : 'var(--accent-pink)'}"><span>${f.tag}</span> <span style="font-size:0.75rem; color:var(--text-muted); float:right; text-transform:uppercase;">${f.type}</span></div>`).join('');
+        function renderFeelingsStats() {
+            let totalPleasant = 0, totalDifficult = 0;
+            feelings.forEach(f => {
+                f.tags.forEach(t => {
+                    if(t.type === 'pleasant') totalPleasant++; else totalDifficult++;
+                });
+            });
+            const total = totalPleasant + totalDifficult || 1;
+            const pPct = Math.round((totalPleasant / total) * 100);
+            const dPct = 100 - pPct;
+
+            document.getElementById('pleasantFill').style.width = pPct + '%';
+            document.getElementById('feelingsRatioText').innerText = `Pleasant ${pPct}% · Difficult ${dPct}%`;
         }
 
         function renderJournals() {
-            const list = document.getElementById('journalEntriesList');
-            if(journals.length === 0) { list.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No journal logs yet.</p>'; return; }
-            list.innerHTML = journals.map(j => `<div class="entry-list-item"><div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:4px;">${j.time}</div><div>${j.text}</div></div>`).join('');
+            const container = document.getElementById('journalEntriesList');
+            if(!journals.length) return container.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No saved entries yet.</p>';
+            container.innerHTML = journals.map(j => `
+                <div class="entry-item">
+                    <strong>${j.title || 'Untitled Entry'}</strong> <span style="float:right; font-size:0.75rem; color:var(--text-muted);">${j.date}</span>
+                    <div style="margin-top:4px; font-size:0.85rem;">${j.body}</div>
+                </div>
+            `).join('');
         }
 
-        function renderAll() { renderMoods(); renderFeelings(); renderJournals(); }
+        /* Customizing Settings */
+        function setLightDarkTheme(isDark) {
+            if(isDark) document.body.classList.add('theme-dark');
+            else document.body.classList.remove('theme-dark');
+        }
 
-        /* Formatting helper for Journal */
-        function formatText(command) {
-            document.execCommand(command, false, null);
+        function applyPalette(gradient) {
+            document.documentElement.style.setProperty('--bg-gradient', gradient);
         }
-        function changeTextColor(color) {
-            document.execCommand('styleWithCSS', false, true);
-            document.execCommand('foreColor', false, color);
+
+        function changeFont(fontFamily) {
+            document.documentElement.style.setProperty('--current-font', fontFamily);
         }
+
+        function setEditorColor(color) {
+            document.getElementById('journalBody').style.color = color;
+        }
+
+        function formatEditor(cmd) {
+            document.execCommand(cmd, false, null);
+        }
+
+        function exportJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ moods, feelings, journals }));
+            const dl = document.createElement('a');
+            dl.setAttribute("href", dataStr);
+            dl.setAttribute("download", "your_days_better_backup.json");
+            dl.click();
+        }
+
+        renderMoods();
+        renderFeelingsStats();
+        renderJournals();
     </script>
 </body>
 </html>
